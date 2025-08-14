@@ -1,6 +1,7 @@
 # Calculates weekly eligible items and refreshes stats & set components once per day.
 import json, datetime as dt
 from pathlib import Path
+import os
 from typing import Any, Dict, List, Tuple
 import pandas as pd
 from wfm_common import (
@@ -12,12 +13,12 @@ WEEKLY_MIN_VOLUME = int(os.getenv("WFM_WEEKLY_MIN_VOLUME", "3"))
 ELIGIBLE_PATH = DATA_DIR / "eligibility" / "eligible.json"
 ELIGIBLE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-ORDERBOOK_FILE = MONTH_DIR / f"orderbook_{dt.datetime.utcnow():%Y-%m}.csv"
-ORDERBOOK_OLD  = MONTH_DIR / f"orderbook_{dt.datetime.utcnow():%Y-%m}_old.csv"
-STATS_FILE     = MONTH_DIR / f"stats48h_{dt.datetime.utcnow():%Y-%m}.csv"
-STATS_OLD      = MONTH_DIR / f"stats48h_{dt.datetime.utcnow():%Y-%m}_old.csv"
-SETCOMP_FILE   = MONTH_DIR / f"set_components_{dt.datetime.utcnow():%Y-%m}.csv"
-SETCOMP_OLD    = MONTH_DIR / f"set_components_{dt.datetime.utcnow():%Y-%m}_old.csv"
+ORDERBOOK_FILE = MONTH_DIR / f"orderbook_{dt.datetime.now(dt.timezone.utc):%Y-%m}.csv"
+ORDERBOOK_OLD  = MONTH_DIR / f"orderbook_{dt.datetime.now(dt.timezone.utc):%Y-%m}_old.csv"
+STATS_FILE     = MONTH_DIR / f"stats48h_{dt.datetime.now(dt.timezone.utc):%Y-%m}.csv"
+STATS_OLD      = MONTH_DIR / f"stats48h_{dt.datetime.now(dt.timezone.utc):%Y-%m}_old.csv"
+SETCOMP_FILE   = MONTH_DIR / f"set_components_{dt.datetime.now(dt.timezone.utc):%Y-%m}.csv"
+SETCOMP_OLD    = MONTH_DIR / f"set_components_{dt.datetime.now(dt.timezone.utc):%Y-%m}_old.csv"
 
 def weekly_volume(item_url: str, days: int = 7) -> int:
     stats = get_json(f"/items/{item_url}/statistics")["payload"]["statistics_closed"]
@@ -74,7 +75,7 @@ def main():
             print(f"[DAILY] Progress {i}/{len(urls)} | eligible={len(eligible)}")
 
     # Save eligibility list (JSON)
-    ELIGIBLE_PATH.write_text(json.dumps({"updated_at": dt.datetime.utcnow().isoformat()+"Z",
+    ELIGIBLE_PATH.write_text(json.dumps({"updated_at": dt.datetime.now(dt.timezone.utc).isoformat()+"Z",
                                          "count": len(eligible), "items": eligible}, indent=2))
     print(f"[DAILY] Eligible items: {len(eligible)} → {ELIGIBLE_PATH}")
 

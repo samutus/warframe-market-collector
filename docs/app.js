@@ -1,19 +1,22 @@
-// Simple UI: left = list with sorting/filtering; right = details with charts.
-// Data files produced by transform/build_analytics.py
-const INDEX_URL = "data/analytics/index.csv";
-const TS_DIR    = "data/analytics/timeseries/";
+// UI for craftable Prime sets only
+const INDEX_URL = "data/analytics/sets_index.csv";
+const SET_TS_DIR = "data/analytics/timeseries/";
+const PARTS_LATEST_URL = "data/analytics/parts_latest_by_set.csv";
 
-let indexRows = [];   // parsed index.csv
-let filtered = [];    // current filtered view
-let current = null;   // current selected item
+let setsIndex = [];      // rows from sets_index.csv
+let partsLatest = [];    // all parts snapshot
+let filtered = [];
+let current = null;
 let priceChart, depthChart, marginChart;
 
 async function csvToRows(url) {
   const res = await fetch(url);
   const txt = await res.text();
+  if (!txt.trim()) return [];
   const [head, ...lines] = txt.trim().split("\n");
   const cols = head.split(",");
   return lines.map(l => {
+    // basic CSV split; ok for our simple content
     const vals = l.split(",");
     const obj = {};
     cols.forEach((c, i) => obj[c] = vals[i]);
@@ -21,24 +24,30 @@ async function csvToRows(url) {
   });
 }
 
+function formatNum(x, d=1) {
+  const v = parseFloat(x);
+  if (Number.isNaN(v)) return "-";
+  return v.toFixed(d);
+}
+
 function renderTable() {
   const el = document.getElementById("itemTable");
   el.innerHTML = "";
   const header = document.createElement("div");
   header.className = "row header";
-  header.innerHTML = `<div>Item</div><div>ROI%</div><div>Marge</div><div>BUY</div>`;
+  header.innerHTML = `<div>Set</div><div>ROI%</div><div>Marge</div><div>BUY(set)</div>`;
   el.appendChild(header);
 
   filtered.forEach(r => {
     const row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
-      <div>${r.item_url}</div>
-      <div>${(parseFloat(r.roi_pct)||0).toFixed(1)}</div>
-      <div>${(parseFloat(r.margin)||0).toFixed(1)}</div>
-      <div>${(parseFloat(r.buy_med)||0).toFixed(1)}</div>
+      <div>${r.set_url}</div>
+      <div>${formatNum(r.roi_pct)}</div>
+      <div>${formatNum(r.margin)}</div>
+      <div>${formatNum(r.buy_med)}</div>
     `;
-    row.addEventListener("click", () => selectItem(r));
+    row.addEventListener("click", () => selectSet(r));
     el.appendChild(row);
   });
 }
@@ -46,70 +55,105 @@ function renderTable() {
 function applyFilters() {
   const q = document.getElementById("search").value.toLowerCase().trim();
   const sort = document.getElementById("sort").value;
-  filtered = indexRows.filter(r => r.item_url.toLowerCase().includes(q));
+
+  filtered = setsIndex.filter(r => r.set_url.toLowerCase().includes(q));
 
   const key = sort === "roi" ? "roi_pct"
             : sort === "margin" ? "margin"
             : sort === "buy" ? "buy_med"
-            : "buy_depth_med";
-
+            : "opportunity_score"; // proxy for liquidity
   filtered.sort((a,b) => (parseFloat(b[key]||0) - parseFloat(a[key]||0)));
+
   renderTable();
 }
 
-async function selectItem(r) {
+function renderPartsTable(setUrl) {
+  const root = document.getElementById("partsTable");
+  root.innerHTML = "";
+
+  const headNames = ["Part", "Qty", "SELL (latest)", "SELL depth"];
+  headNames.forEach(h => {
+    const cell = document.createElement("div");
+    cell.className = "cell head";
+    cell.textContent = h;
+    root.appendChild(cell);
+  });
+
+  const rows = partsLatest.filter(r => r.set_url === setUrl);
+  rows.forEach(r => {
+    const cells = [
+      r.part_url,
+      r.quantity_for_set,
+      formatNum(r.sell_med_latest),
+      formatNum(r.sell_depth_med_latest, 0)
+    ];
+    cells.forEach(txt => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.textContent = txt;
+      root.appendChild(cell);
+    });
+  });
+}
+
+async function selectSet(r) {
   current = r;
-  document.getElementById("itemTitle").textContent = r.item_url;
+  document.getElementById("itemTitle").textContent = r.set_url;
   document.getElementById("meta").textContent =
-    `Dernière MAJ: ${r.latest_date} | BUY(med): ${(+r.buy_med||0).toFixed(1)} | SELL(med): ${(+r.sell_med||0).toFixed(1)} | Profondeur BUY: ${(+r.buy_depth_med||0).toFixed(0)}`;
+    `Dernière MAJ: ${r.latest_date} | BUY(set): ${formatNum(r.buy_med)} | Coût pièces: ${formatNum(r.parts_cost)} | Marge: ${formatNum(r.margin)} | ROI: ${formatNum(r.roi_pct)}%`;
 
-  // Load daily series
-  const ts = await csvToRows(`${TS_DIR}${r.item_url}.csv`);
-  const dates = ts.map(x => x.date);
-  const buy = ts.map(x => +x.buy_med || null);
-  const sell= ts.map(x => +x.sell_med || null);
-  const bdepth = ts.map(x => +x.buy_depth_med || null);
-  const sdepth = ts.map(x => +x.sell_depth_med || null);
+  // Parts snapshot
+  renderPartsTable(r.set_url);
 
-  // Manage charts (destroy old to avoid leaks)
+  // Load per-set time series (margin & co)
+  const setTs = await csvToRows(`${SET_TS_DIR}${r.set_url}__set.csv`);
+  const dates = setTs.map(x => x.date);
+  const buy = setTs.map(x => +x.buy_med || null);
+  const pcost = setTs.map(x => +x.parts_cost || null);
+  const margin = setTs.map(x => +x.margin || null);
+  const bdepth = setTs.map(x => +x.buy_depth_med || null);
+  const bottl = setTs.map(x => +x.min_part_eff_depth || null);
+
+  // Destroy previous charts
   if (priceChart) priceChart.destroy();
   if (depthChart) depthChart.destroy();
+  if (marginChart) marginChart.destroy();
 
-  const pc = document.getElementById("priceChart").getContext("2d");
-  priceChart = new Chart(pc, {
+  // Prices chart
+  priceChart = new Chart(document.getElementById("priceChart").getContext("2d"), {
     type: "line",
-    data: { labels: dates, datasets: [{label:"BUY (median top-3)", data: buy}, {label:"SELL (median top-3)", data: sell}] },
+    data: { labels: dates, datasets: [
+      { label: "BUY (set) – median", data: buy },
+      { label: "Parts cost – median", data: pcost }
+    ]},
     options: { responsive: true, maintainAspectRatio: false }
   });
 
-  const dc = document.getElementById("depthChart").getContext("2d");
-  depthChart = new Chart(dc, {
+  // Depths chart
+  depthChart = new Chart(document.getElementById("depthChart").getContext("2d"), {
     type: "line",
-    data: { labels: dates, datasets: [{label:"BUY depth (median)", data: bdepth}, {label:"SELL depth (median)", data: sdepth}] },
+    data: { labels: dates, datasets: [
+      { label: "BUY depth (set) – median", data: bdepth },
+      { label: "Min eff. SELL depth (parts)", data: bottl }
+    ]},
     options: { responsive: true, maintainAspectRatio: false }
   });
 
-  // If this item is a set with margin series, show it
-  const setPath = `${TS_DIR}${r.item_url}__set.csv`;
-  try {
-    const setTs = await csvToRows(setPath);
-    const sdates = setTs.map(x => x.date);
-    const margin = setTs.map(x => +x.margin || null);
-    if (marginChart) marginChart.destroy();
-    document.getElementById("setBlock").classList.remove("hidden");
-    marginChart = new Chart(document.getElementById("marginChart").getContext("2d"), {
-      type: "line",
-      data: { labels: sdates, datasets: [{label:"Margin (BUY set - sum(parts SELL))", data: margin}] },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-  } catch {
-    document.getElementById("setBlock").classList.add("hidden");
-    if (marginChart) marginChart.destroy();
-  }
+  // Margin chart
+  marginChart = new Chart(document.getElementById("marginChart").getContext("2d"), {
+    type: "line",
+    data: { labels: dates, datasets: [
+      { label: "Margin = BUY(set) − Σ parts SELL", data: margin }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false }
+  });
 }
 
 async function boot() {
-  indexRows = await csvToRows(INDEX_URL);
+  [setsIndex, partsLatest] = await Promise.all([
+    csvToRows(INDEX_URL),
+    csvToRows(PARTS_LATEST_URL)
+  ]);
   applyFilters();
   document.getElementById("search").addEventListener("input", applyFilters);
   document.getElementById("sort").addEventListener("change", applyFilters);
