@@ -21,29 +21,27 @@
       </div>
       <div class="table" id="itemTable"></div>
     </aside>
+
     <main id="right">
       <h2 id="itemTitle">Sélectionne un set</h2>
       <div id="meta"></div>
 
       <div id="partsSection" class="card">
         <h3>Pièces requises (dernier snapshot)</h3>
-        <div id="partsTable" class="parts-table"></div>
+        <div id="partsTable"></div>
       </div>
 
-      <div class="card">
+      <!-- ... en-tête identique ... -->
+        <div class="card">
         <h3>Prix (médian journalier)</h3>
-        <canvas id="priceChart"></canvas>
-      </div>
+        <div class="chart-box"><canvas id="priceChart"></canvas></div>
+        </div>
 
-      <div class="card">
-        <h3>Profondeur (médian journalier)</h3>
-        <canvas id="depthChart"></canvas>
-      </div>
+        <div class="card">
+        <h3>Profondeurs (médian journalier)</h3>
+        <div class="chart-box"><canvas id="depthChart"></canvas></div>
+        </div>
 
-      <div class="card">
-        <h3>Arbitrage Parts → Set (marge)</h3>
-        <canvas id="marginChart"></canvas>
-      </div>
     </main>
   </div>
   <script src="app.js"></script>

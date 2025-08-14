@@ -51,7 +51,7 @@ def run_dev_collect(limit_items: int = 50):
     print(f"[DEV] set_components → {SETCOMP_FILE}")
 
 if __name__ == "__main__":
-    run_dev_collect(limit_items=50)
+    run_dev_collect(limit_items=None)
     print("[DEV] Running analytics build...")
     build_analytics()
     print("[DEV] Done. Check docs/data/analytics for outputs.")
