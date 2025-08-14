@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>WFM – Profit & Volume</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+  <div id="app">
+    <aside id="left">
+      <div class="controls">
+        <input id="search" type="text" placeholder="Rechercher un item…" />
+        <select id="sort">
+          <option value="roi">Trier par ROI%</option>
+          <option value="margin">Trier par Marge</option>
+          <option value="buy">Trier par Prix BUY</option>
+          <option value="volume">Trier par Profondeur BUY</option>
+        </select>
+      </div>
+      <div class="table" id="itemTable"></div>
+    </aside>
+    <main id="right">
+      <h2 id="itemTitle">Sélectionne un item</h2>
+      <div id="meta"></div>
+      <canvas id="priceChart"></canvas>
+      <canvas id="depthChart"></canvas>
+      <div id="setBlock" class="hidden">
+        <h3>Arbitrage Parts → Set</h3>
+        <canvas id="marginChart"></canvas>
+      </div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
