@@ -72,6 +72,7 @@ def main():
         .groupby(["set_url","platform","part_url"], as_index=False)
         .agg(quantity_for_set=("quantity_for_set", "max"))
     )
+    
 
     if "quantity_for_set" not in df_comps.columns:
         df_comps["quantity_for_set"] = 1
@@ -79,6 +80,7 @@ def main():
 
     # Daily medians for all items
     daily = daily_medians_orderbook(df_orders)
+    daily["date"] = pd.to_datetime(daily["date"])
 
     # Identify craftable PRIME sets (>=2 parts or total qty>=2 and url contains 'prime_set')
     parts_per_set = (df_comps
@@ -150,12 +152,49 @@ def main():
     for set_url, g in sets_daily.groupby("set_url"):
         g.to_csv(ANALYTICS_DIR / "timeseries" / f"{set_url}__set.csv", index=False)
 
-    # Latest row per set for the left table
+    # Latest row per set (we need its date to align parts prices)
     latest_by_set = (sets_daily
-        .sort_values(["set_url","date"])
-        .groupby("set_url", as_index=False)
+        .sort_values(["set_url","platform","date"])
+        .groupby(["set_url","platform"], as_index=False)
         .tail(1)
+        .rename(columns={"date": "latest_date"})
     )
+
+    # Prepare parts daily (sorted) for asof join
+    parts_daily_sorted = parts_daily.sort_values(["part_url","platform","date"])
+
+    # Attach latest set date to each component row
+    comp_with_date = df_comps.merge(
+        latest_by_set[["set_url","platform","latest_date"]],
+        on=["set_url","platform"], how="left"
+    )
+
+    # Use merge_asof to get the last BUY price <= latest_date for each (part, platform)
+    left = comp_with_date.rename(columns={"latest_date": "date"}) \
+                        .sort_values(["part_url","platform","date"])
+    right = parts_daily_sorted  # already sorted
+
+    parts_latest = pd.merge_asof(
+        left, right,
+        on="date",
+        by=["part_url","platform"],
+        direction="backward",
+        allow_exact_matches=True
+    )
+
+    # Keep clean columns for the UI
+    parts_latest = parts_latest.rename(columns={
+        "date": "latest_date_part",
+        "buy_med": "buy_med_latest",
+        "sell_depth_med": "sell_depth_med_latest"
+    })[[
+        "set_url","platform","part_url","quantity_for_set",
+        "buy_med_latest","sell_depth_med_latest","latest_date_part"
+    ]]
+
+    # Export
+    parts_latest.to_csv(ANALYTICS_DIR / "parts_latest_by_set.csv", index=False)
+
 
     sets_index = latest_by_set[[
         "set_url","platform","date",
