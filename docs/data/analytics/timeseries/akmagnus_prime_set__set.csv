@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+akmagnus_prime_set,pc,2025-08-15,33.0,59.333,9.0,31.0,2,115.334,14.0,-82.334,-71.38744862746458,-206.12158473609253,9.0,0.0

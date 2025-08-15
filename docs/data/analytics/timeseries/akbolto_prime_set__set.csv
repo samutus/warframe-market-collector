@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+akbolto_prime_set,pc,2025-08-15,60.667,88.667,11.0,21.0,4,155.998,5.0,-95.33099999999999,-61.11039885126732,-203.07011519751194,5.0,0.0
