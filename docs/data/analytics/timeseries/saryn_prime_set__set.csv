@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-saryn_prime_set,pc,2025-08-15,75.333,84.333,20.0,59.0,4,62.0,19.0,22.333,36.02096774193548,67.44816331447802,19.0,424.327
+saryn_prime_set,pc,2025-08-15,75.0,86.0,21.0,65.0,4,61.0,16.0,25.0,40.98360655737705,74.04184892058882,16.0,400.0

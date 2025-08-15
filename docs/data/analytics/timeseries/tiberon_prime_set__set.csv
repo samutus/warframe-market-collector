@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-tiberon_prime_set,pc,2025-08-15,36.0,52.333,11.0,21.0,4,17.0,8.0,35.333,207.8411764705882,82.67784139096483,8.0,282.664
+tiberon_prime_set,pc,2025-08-15,36.0,48.333,8.0,29.0,4,15.0,10.0,33.333,222.21999999999997,76.56579093315379,8.0,266.664

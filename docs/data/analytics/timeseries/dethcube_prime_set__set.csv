@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-dethcube_prime_set,pc,2025-08-15,63.667,75.0,13.0,31.0,4,41.667,8.0,33.333,79.9985600115199,80.52381729087877,8.0,266.664
+dethcube_prime_set,pc,2025-08-15,63.667,73.0,11.0,39.0,4,40.334,16.0,32.666,80.98874398770266,86.82342110302768,11.0,359.32599999999996

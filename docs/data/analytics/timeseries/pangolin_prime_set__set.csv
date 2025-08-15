@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-pangolin_prime_set,pc,2025-08-15,15.0,26.0,6.0,40.0,3,13.0,9.0,13.0,100.0,27.58701654943449,6.0,78.0
+pangolin_prime_set,pc,2025-08-15,14.0,25.0,6.0,47.0,3,11.917,12.0,13.083,109.78434169673575,29.43336501091386,6.0,78.498

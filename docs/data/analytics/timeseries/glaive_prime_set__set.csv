@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-glaive_prime_set,pc,2025-08-15,65.0,75.667,10.0,51.0,3,43.999,9.0,31.668,71.97436305370576,74.423614992929,9.0,285.012
+glaive_prime_set,pc,2025-08-15,60.333,75.667,10.0,80.0,3,33.25,9.0,42.417,127.56992481203007,99.68505990763767,9.0,381.75300000000004

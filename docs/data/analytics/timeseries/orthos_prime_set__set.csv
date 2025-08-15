@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-orthos_prime_set,pc,2025-08-15,7.333,7.0,10.0,55.0,3,4.667,10.0,2.333,49.98928647953718,5.594289671438599,10.0,23.330000000000002
+orthos_prime_set,pc,2025-08-15,7.333,8.0,8.0,60.0,3,5.667,9.0,2.333,41.16816657843657,5.248646378541775,8.0,18.664

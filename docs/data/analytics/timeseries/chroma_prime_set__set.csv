@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-chroma_prime_set,pc,2025-08-15,63.333,72.667,14.0,41.0,4,30.667,11.0,42.0,136.95503309746633,109.03100713605653,11.0,462.0
+chroma_prime_set,pc,2025-08-15,63.333,73.667,14.0,56.0,4,33.1675,17.0,40.499500000000005,122.10597723675286,113.35572955058885,14.0,566.993

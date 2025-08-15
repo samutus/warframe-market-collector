@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-harrow_prime_set,pc,2025-08-15,47.333,57.667,11.0,40.0,4,33.5,16.0,24.167,72.14029850746269,64.23380939805517,11.0,265.837
+harrow_prime_set,pc,2025-08-15,42.333,57.667,12.0,54.0,4,34.916,20.0,22.751000000000005,65.15923931721848,63.76812666616244,12.0,273.01200000000006

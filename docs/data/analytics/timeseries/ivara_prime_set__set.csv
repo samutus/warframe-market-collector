@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-ivara_prime_set,pc,2025-08-15,45.0,53.333,11.0,55.0,4,29.834000000000003,9.0,23.498999999999995,78.76583763491317,56.2408142780323,9.0,211.49099999999996
+ivara_prime_set,pc,2025-08-15,45.0,55.0,11.0,60.0,4,34.5,14.0,20.5,59.42028985507246,53.21751538783712,11.0,225.5

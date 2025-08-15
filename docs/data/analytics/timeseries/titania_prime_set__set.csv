@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-titania_prime_set,pc,2025-08-15,52.0,60.0,21.0,92.0,4,38.668,21.0,21.332,55.16706320471709,65.9381176150396,21.0,447.97200000000004
+titania_prime_set,pc,2025-08-15,50.667,60.0,20.0,94.0,4,30.6665,30.0,29.3335,95.6532372458546,94.99590413037275,20.0,586.6700000000001

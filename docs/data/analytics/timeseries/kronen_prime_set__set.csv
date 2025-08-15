@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-kronen_prime_set,pc,2025-08-15,80.0,101.667,15.0,19.0,3,59.331999999999994,5.0,42.33500000000001,71.35272702757368,96.01662440511028,5.0,211.67500000000004
+kronen_prime_set,pc,2025-08-15,80.0,101.333,8.0,21.0,3,59.331999999999994,4.0,42.001000000000005,70.78979302905685,79.61907124538885,4.0,168.00400000000002

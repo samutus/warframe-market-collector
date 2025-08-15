@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-aklex_prime_set,pc,2025-08-15,29.333,49.333,7.0,25.0,2,34.0,11.0,15.332999999999998,45.0970588235294,34.956548485524955,7.0,107.33099999999999
+aklex_prime_set,pc,2025-08-15,36.667,49.333,7.0,28.0,2,33.667,14.0,15.665999999999997,46.532212552350956,37.421631938142326,7.0,109.66199999999998

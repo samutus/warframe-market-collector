@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-afuris_prime_set,pc,2025-08-15,61.0,83.333,11.0,17.0,4,50.666,6.0,32.667,64.47519046303242,72.22387908182976,6.0,196.002
+afuris_prime_set,pc,2025-08-15,61.0,80.0,10.0,18.0,4,48.666,6.0,31.334000000000003,64.38581350429459,67.95068192781932,6.0,188.00400000000002

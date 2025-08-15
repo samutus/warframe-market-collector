@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-daikyu_prime_set,pc,2025-08-15,29.333,35.0,13.0,64.0,5,14.666,14.0,20.334,138.6472112368744,54.36314535672395,13.0,264.342
+daikyu_prime_set,pc,2025-08-15,26.667,36.667,7.0,64.0,5,13.666,15.0,23.001,168.308210156593,55.66465222142266,7.0,161.007

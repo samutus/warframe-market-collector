@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-spira_prime_set,pc,2025-08-15,100.0,119.667,12.0,18.0,3,68.0,4.0,51.667,75.98088235294118,106.9727224205015,4.0,206.668
+spira_prime_set,pc,2025-08-15,97.667,119.667,11.0,20.0,3,68.668,5.0,50.998999999999995,74.2689462340537,108.63594009249785,5.0,254.99499999999998

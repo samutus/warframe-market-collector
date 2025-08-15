@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-astilla_prime_set,pc,2025-08-15,22.333,34.667,9.0,36.0,4,9.667,14.0,25.0,258.6117720078618,62.58701895210136,9.0,225.0
+astilla_prime_set,pc,2025-08-15,22.0,34.667,7.0,40.0,4,12.667,14.0,22.0,173.67964000947345,52.551761945559264,7.0,154.0

@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-gauss_prime_set,pc,2025-08-15,27.0,25.0,26.0,98.0,4,17.0,25.0,8.0,47.05882352941177,26.215677747541733,25.0,200.0
+gauss_prime_set,pc,2025-08-15,26.333,27.667,29.0,117.0,4,15.666,21.0,12.001000000000001,76.60538746329632,38.950825879743945,21.0,252.02100000000002

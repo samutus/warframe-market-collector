@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-corvas_prime_set,pc,2025-08-15,25.333,44.333,7.0,22.0,4,11.667,6.0,32.666,279.9862861061112,65.73483093600814,6.0,195.99599999999998
+corvas_prime_set,pc,2025-08-15,23.667,44.0,7.0,24.0,4,11.667,7.0,32.333,277.13208194051595,67.23458336713412,7.0,226.331

@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-zhuge_prime_set,pc,2025-08-15,30.0,35.0,6.0,30.0,5,12.5,14.0,22.5,180.0,52.176720154992935,6.0,135.0
+zhuge_prime_set,pc,2025-08-15,28.333,34.333,6.0,38.0,5,13.833,14.0,20.5,148.19634208053205,47.53878947454912,6.0,123.0

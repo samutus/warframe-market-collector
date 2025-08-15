@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-xaku_prime_set,pc,2025-08-15,29.333,33.0,20.0,86.0,4,15.667,21.0,17.333,110.6338163017808,53.17364432738545,20.0,346.65999999999997
+xaku_prime_set,pc,2025-08-15,31.667,35.667,20.0,95.0,4,17.334,28.0,18.333000000000002,105.76323987538942,58.763821425270095,20.0,366.66

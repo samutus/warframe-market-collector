@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-trumna_prime_set,pc,2025-08-15,19.667,30.0,11.0,41.0,4,15.5,16.0,14.5,93.54838709677419,38.53975405601854,11.0,159.5
+trumna_prime_set,pc,2025-08-15,17.0,29.333,9.0,51.0,4,14.5,21.0,14.832999999999998,102.29655172413791,39.916922765739564,9.0,133.49699999999999

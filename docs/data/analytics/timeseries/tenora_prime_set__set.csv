@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-tenora_prime_set,pc,2025-08-15,39.0,64.0,6.0,22.0,4,33.0,6.0,31.0,93.93939393939394,60.32321462071471,6.0,186.0
+tenora_prime_set,pc,2025-08-15,49.0,61.667,6.0,31.0,4,32.333,10.0,29.334000000000003,90.72464664584173,63.61349663849658,6.0,176.00400000000002

@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-nikana_prime_set,pc,2025-08-15,68.0,83.333,10.0,40.0,3,51.333,13.0,32.0,62.338067130306044,80.57081390268594,10.0,320.0
+nikana_prime_set,pc,2025-08-15,68.0,84.333,7.0,45.0,3,42.5,11.0,41.833,98.43058823529412,95.37189674525308,7.0,292.831

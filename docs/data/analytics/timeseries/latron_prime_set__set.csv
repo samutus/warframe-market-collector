@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-latron_prime_set,pc,2025-08-15,88.333,98.333,12.0,22.0,4,45.666,7.0,52.667,115.33088074278457,122.13294757346725,7.0,368.669
+latron_prime_set,pc,2025-08-15,86.667,98.333,12.0,34.0,4,52.834,9.0,45.498999999999995,86.11689442404511,110.6962512450633,9.0,409.491

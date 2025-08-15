@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-wukong_prime_set,pc,2025-08-15,50.667,59.667,22.0,103.0,4,38.667,17.0,21.0,54.30987663899449,63.26342692204385,17.0,357.0
+wukong_prime_set,pc,2025-08-15,52.333,57.667,23.0,131.0,4,37.668,26.0,19.999000000000002,53.09281087395137,64.73425142432392,23.0,459.97700000000003

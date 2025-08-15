@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-scourge_prime_set,pc,2025-08-15,55.0,76.667,15.0,18.0,4,39.0,10.0,37.667,96.5820512820513,97.3241823322896,10.0,376.67
+scourge_prime_set,pc,2025-08-15,55.0,76.667,12.0,24.0,4,39.5,11.0,37.167,94.09367088607596,93.84140803116968,11.0,408.837

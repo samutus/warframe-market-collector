@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-nami_skyla_prime_set,pc,2025-08-15,88.0,114.667,7.0,14.0,3,57.334,3.0,57.333,99.99825583423448,98.59270858416637,3.0,171.999
+nami_skyla_prime_set,pc,2025-08-15,88.333,113.0,7.0,20.0,3,49.666,2.0,63.334,127.51983248097292,98.57219742681491,2.0,126.668

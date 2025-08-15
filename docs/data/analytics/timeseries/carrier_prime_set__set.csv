@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-carrier_prime_set,pc,2025-08-15,73.333,79.333,16.0,30.0,4,29.0,12.0,50.333,173.56206896551726,135.82013676929523,12.0,603.996
+carrier_prime_set,pc,2025-08-15,71.667,84.667,16.0,37.0,4,37.333,12.0,47.334,126.78863204135753,127.7275416493716,12.0,568.008

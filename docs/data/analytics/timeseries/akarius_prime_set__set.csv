@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-akarius_prime_set,pc,2025-08-15,31.667,38.667,11.0,67.0,4,24.667,10.0,14.0,56.755989783921834,34.17835000123853,10.0,140.0
+akarius_prime_set,pc,2025-08-15,34.0,38.333,11.0,72.0,4,24.000999999999998,11.0,14.332,59.71417857589268,35.61368210476162,11.0,157.65200000000002

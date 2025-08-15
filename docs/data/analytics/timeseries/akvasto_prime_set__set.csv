@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-akvasto_prime_set,pc,2025-08-15,27.667,51.667,4.0,26.0,2,24.333,9.0,27.334000000000003,112.33304565815973,53.18950801427794,4.0,109.33600000000001
+akvasto_prime_set,pc,2025-08-15,27.667,50.0,4.0,27.0,2,24.333,9.0,25.667,105.48226688036824,49.94567579580273,4.0,102.668

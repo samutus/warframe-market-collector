@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-soma_prime_set,pc,2025-08-15,48.333,91.333,6.0,30.0,4,34.166,5.0,57.167,167.32131358660658,106.80466400945251,5.0,285.83500000000004
+soma_prime_set,pc,2025-08-15,56.667,91.333,6.0,39.0,4,31.665999999999997,5.0,59.667,188.4260721278343,111.47539467615938,5.0,298.33500000000004

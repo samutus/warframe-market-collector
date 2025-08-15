@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-mirage_prime_set,pc,2025-08-15,70.0,77.667,24.0,57.0,4,46.833,17.0,30.834000000000003,65.83819101915317,94.16563233330973,17.0,524.1780000000001
+mirage_prime_set,pc,2025-08-15,68.333,77.667,18.0,67.0,4,43.334,17.0,34.333,79.22878109567544,100.16256129291109,17.0,583.661

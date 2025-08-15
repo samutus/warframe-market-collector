@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-nyx_prime_set,pc,2025-08-15,82.333,94.667,14.0,55.0,4,57.667,11.0,37.0,64.16147883538245,96.05112533414504,11.0,407.0
+nyx_prime_set,pc,2025-08-15,78.0,93.333,14.0,58.0,4,55.667,13.0,37.666,67.66306788582104,100.70041472442038,13.0,489.65799999999996

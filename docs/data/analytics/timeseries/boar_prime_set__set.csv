@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-boar_prime_set,pc,2025-08-15,80.0,94.0,11.0,31.0,4,68.667,11.0,25.333,36.89253935660506,62.95014015907941,11.0,278.663
+boar_prime_set,pc,2025-08-15,81.667,94.333,15.0,37.0,4,67.333,11.0,27.0,40.09920841192283,70.95440579120354,11.0,297.0

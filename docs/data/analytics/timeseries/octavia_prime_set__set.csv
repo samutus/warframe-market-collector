@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-octavia_prime_set,pc,2025-08-15,72.333,89.333,20.0,43.0,4,58.5,14.0,30.833,52.7059829059829,88.65839893284694,14.0,431.662
+octavia_prime_set,pc,2025-08-15,74.667,89.667,21.0,52.0,4,57.667,20.0,32.0,55.49100872249293,98.16861584701637,20.0,640.0
