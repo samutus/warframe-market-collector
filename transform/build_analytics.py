@@ -110,6 +110,15 @@ def main():
                                      100.0 * sets_daily["margin"] / sets_daily["parts_cost"],
                                      np.nan)
 
+    # Opportunity score (kept for UI sorting & legacy)
+    # volume proxy = sqrt(buy_depth_med * min_part_eff_depth)
+    vol_score = np.sqrt(
+        np.maximum(0, sets_daily["buy_depth_med"].fillna(0)) *
+        np.maximum(0, sets_daily["min_part_eff_depth"].fillna(0))
+    )
+    sets_daily["opportunity_score"] = sets_daily["margin"] * np.log1p(vol_score)
+
+
     # --- NEW KPI ---
     # daily_volume_cap = min( BUY depth on set , min effective SELL depth of parts )
     assembly_cap = np.maximum(0, sets_daily["min_part_eff_depth"].fillna(0))
@@ -146,6 +155,7 @@ def main():
         "date":"latest_date",
         "kpi_daily_potential":"kpi_daily"
     })
+
 
     # Attach 30d KPI avg
     sets_index = sets_index.merge(kpi_30d, on="set_url", how="left")

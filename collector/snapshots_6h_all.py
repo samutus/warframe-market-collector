@@ -1,15 +1,19 @@
 # 6-hour collector for ALL items (no daily eligibility stage)
 import os, datetime as dt
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Set
 import pandas as pd
 from pathlib import Path
 from .wfm_common import (
     get_json, list_all_items, rotate_monthly_csv, append_and_write,
-    ONLINE_STATES, MONTH_DIR, PLATFORM
+    ONLINE_STATES, MONTH_DIR, PLATFORM,
+    is_prime_url, is_prime_set_url
 )
+
 
 TOP_DEPTH = int(os.getenv("WFM_TOP_DEPTH", "3"))
 COLLECT_STATS48H = os.getenv("COLLECT_STATS48H", "false").lower() in {"1","true","yes"}
+ONLY_PRIME = os.getenv("WFM_ONLY_PRIME", "true").lower() in {"1","true","yes"}
+STRICT_SETS_PARTS = os.getenv("WFM_STRICT_SETS_PARTS", "true").lower() in {"1","true","yes"}
 
 # Monthly files
 MONTH = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m")
@@ -19,6 +23,7 @@ STATS_FILE     = MONTH_DIR / f"stats48h_{MONTH}.csv"
 STATS_OLD      = MONTH_DIR / f"stats48h_{MONTH}_old.csv"
 SETCOMP_FILE   = MONTH_DIR / f"set_components_{MONTH}.csv"
 SETCOMP_OLD    = MONTH_DIR / f"set_components_{MONTH}_old.csv"
+MAX_ITEMS = int(os.getenv("WFM_MAX_ITEMS", "0") or 0)
 
 def is_set_url(url: str) -> bool:
     return url.endswith("_set")
@@ -97,40 +102,65 @@ def fetch_set_components(item_url: str) -> List[Dict[str, Any]]:
 
 def main():
     items = list_all_items()
-    urls = [it["url_name"] for it in items if "url_name" in it]
-    print(f"[6H] Collecting ALL items: {len(urls)}")
+    all_urls = [it["url_name"] for it in items if "url_name" in it]
 
+    # 1) Prime-only filter (token 'prime' only, excludes 'primed_*')
+    prime_candidates = [u for u in all_urls if is_prime_url(u)] if ONLY_PRIME else all_urls
+    print(f"[6H] Prime filter: {len(prime_candidates)}/{len(all_urls)} urls")
+
+    # 2) Strict mode: only prime sets + their exact parts
+    comp_rows: List[Dict[str, Any]] = []
+    if STRICT_SETS_PARTS:
+        prime_sets = [u for u in prime_candidates if is_prime_set_url(u)]
+        part_urls: Set[str] = set()
+
+        # Derive exact parts universe by fetching components once per prime set
+        for i, su in enumerate(prime_sets, 1):
+            parts = fetch_set_components(su)  # set_url, part_url, quantity_for_set, platform
+            comp_rows.extend(parts)
+            for p in parts:
+                if p.get("part_url"):
+                    part_urls.add(p["part_url"])
+            if i % 50 == 0:
+                print(f"[6H] Components fetched for {i}/{len(prime_sets)} prime sets")
+
+        target_urls = sorted(set(prime_sets) | part_urls)
+        print(f"[6H] Target universe: {len(prime_sets)} prime sets + {len(part_urls)} parts = {len(target_urls)} items")
+    else:
+        # Not strict: all prime items (sets + parts)
+        target_urls = prime_candidates
+        print(f"[6H] Target universe (non-strict): {len(target_urls)} prime items")
+
+    # 3) (DEV) Apply MAX_ITEMS after target_urls is built (correct placement)
+    if MAX_ITEMS > 0:
+        target_urls = target_urls[:MAX_ITEMS]
+        print(f"[6H] DEV limit applied → {len(target_urls)} items")
+
+    # 4) Snapshot orderbooks for the target universe
     ob_rows: List[Dict[str, Any]] = []
     stats_rows: List[Dict[str, Any]] = []
-    comp_rows: List[Dict[str, Any]] = []
-
-    for i, u in enumerate(urls, 1):
+    for i, u in enumerate(target_urls, 1):
         ob_rows.append(snapshot_orders(u))
         if COLLECT_STATS48H:
             stats_rows.extend(snapshot_stats48h(u))
-        if is_set_url(u):
+        if not STRICT_SETS_PARTS and is_set_url(u):
             comp_rows.extend(fetch_set_components(u))
         if i % 200 == 0:
-            print(f"[6H] Progress {i}/{len(urls)}")
+            print(f"[6H] Orders {i}/{len(target_urls)}")
 
-    # Write orderbook (rotate + dedup)
+    # 5) Write monthly CSVs (rotate + dedup)
     prev_ob = rotate_monthly_csv(ORDERBOOK_FILE, ORDERBOOK_OLD)
     df_ob = pd.DataFrame(ob_rows)
     append_and_write(ORDERBOOK_FILE, prev_ob, df_ob, subset_keys=["item_url","ts","platform"])
     print(f"[6H] orderbook → {ORDERBOOK_FILE}")
 
-    # Write stats48h if collected
     if COLLECT_STATS48H:
         prev_stats = rotate_monthly_csv(STATS_FILE, STATS_OLD)
         df_stats = pd.DataFrame(stats_rows)
         append_and_write(STATS_FILE, prev_stats, df_stats, subset_keys=["item_url","ts_bucket","platform"])
         print(f"[6H] stats48h → {STATS_FILE}")
 
-    # Write set components (rotate monthly; dedup by set/part)
     prev_comp = rotate_monthly_csv(SETCOMP_FILE, SETCOMP_OLD)
     df_comp = pd.DataFrame(comp_rows)
     append_and_write(SETCOMP_FILE, prev_comp, df_comp, subset_keys=["set_url","part_url","platform"])
     print(f"[6H] set_components → {SETCOMP_FILE}")
-
-if __name__ == "__main__":
-    main()

@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import requests
 import pandas as pd
+import re
 
 BASE = "https://api.warframe.market/v1"
 PLATFORM = os.getenv("WFM_PLATFORM", "pc")
@@ -63,3 +64,16 @@ def append_and_write(current_path: Path, old_df: Optional[pd.DataFrame], new_df:
     if not df.empty and subset_keys:
         df = df.drop_duplicates(subset=subset_keys)
     df.to_csv(current_path, index=False)
+
+# --- Prime helpers ---
+PRIME_TOKEN = re.compile(r'(^|_)prime(_|$)')  # matches token "prime" between underscores/boundaries
+
+def is_prime_url(url: str) -> bool:
+    """True for urls like 'nova_prime_blueprint', 'kronen_prime_handle', 'nova_prime_set'.
+       Does NOT match 'primed_*' (mods), thanks to the token regex."""
+    return bool(PRIME_TOKEN.search(str(url).lower()))
+
+def is_prime_set_url(url: str) -> bool:
+    """True only for '*_prime_set'."""
+    u = str(url).lower()
+    return u.endswith("_prime_set")
