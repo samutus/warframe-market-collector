@@ -4,7 +4,7 @@ import datetime as dt
 from typing import Any, Dict, List, Set
 
 import pandas as pd
-from .wfm_common import (
+from collector.wfm_common import (
     get_json, list_all_items, rotate_monthly_csv, append_and_write,
     ONLINE_STATES, MONTH_DIR, PLATFORM,
     is_prime_url, is_prime_set_url
