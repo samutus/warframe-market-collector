@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+phantasma_prime_set,pc,2025-08-15,37.667,47.667,11.0,26.0,4,100.668,5.0,-63.001000000000005,-62.58294592124608,-134.20209929150488,5.0,0.0

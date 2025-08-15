@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+pandero_prime_set,pc,2025-08-15,15.0,34.667,3.0,24.0,3,73.334,10.0,-58.334,-79.54564049417733,-108.98496108467128,3.0,0.0

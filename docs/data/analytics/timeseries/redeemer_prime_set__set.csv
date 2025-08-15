@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+redeemer_prime_set,pc,2025-08-15,23.667,42.667,4.0,36.0,3,84.668,8.0,-61.001000000000005,-72.04729059384891,-115.6363649684523,4.0,0.0

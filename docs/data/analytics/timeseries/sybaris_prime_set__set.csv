@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+sybaris_prime_set,pc,2025-08-15,38.333,55.0,13.0,28.0,4,83.334,10.0,-45.001000000000005,-54.00076799385605,-113.30522488858658,10.0,0.0

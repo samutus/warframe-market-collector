@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+volnus_prime_set,pc,2025-08-15,23.333,27.667,6.0,37.0,3,43.334,15.0,-20.001000000000005,-46.155443762403664,-47.00475948823965,6.0,0.0

@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+galatine_prime_set,pc,2025-08-15,30.0,48.333,6.0,13.0,3,84.0,6.0,-54.0,-64.28571428571429,-105.07914804898691,6.0,0.0

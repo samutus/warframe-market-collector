@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+grendel_prime_set,pc,2025-08-15,28.667,30.0,14.0,65.0,4,56.666,19.0,-27.998999999999995,-49.41058130095648,-79.83231269038785,14.0,0.0

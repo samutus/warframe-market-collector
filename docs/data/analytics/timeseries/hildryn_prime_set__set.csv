@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+hildryn_prime_set,pc,2025-08-15,35.667,43.333,18.0,57.0,4,78.0,14.0,-42.333,-54.27307692307693,-119.6247638163824,14.0,0.0

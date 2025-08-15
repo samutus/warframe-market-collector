@@ -1,2 +1,3 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
 frost_prime_set,pc,2025-08-14,79.5,90.0,17.0,49.5,4,,,,,,0.0,0.0
+frost_prime_set,pc,2025-08-15,80.667,90.0,22.0,47.0,4,340.0,10.0,-259.33299999999997,-76.27441176470587,-716.2928604852235,10.0,0.0

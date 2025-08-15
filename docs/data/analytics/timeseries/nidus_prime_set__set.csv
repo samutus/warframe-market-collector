@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+nidus_prime_set,pc,2025-08-15,63.667,67.667,16.0,47.0,4,131.332,17.0,-67.66499999999999,-51.52209667103219,-193.64151732759623,16.0,0.0

@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+reaper_prime_set,pc,2025-08-15,26.333,34.667,3.0,34.0,3,60.001999999999995,6.0,-33.669,-56.11312956234792,-55.78365167609649,3.0,0.0

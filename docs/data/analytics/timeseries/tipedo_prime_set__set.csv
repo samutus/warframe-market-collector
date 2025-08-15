@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+tipedo_prime_set,pc,2025-08-15,32.0,52.0,6.0,45.0,3,82.668,7.0,-50.668000000000006,-61.29094692021097,-101.96082819646301,6.0,0.0

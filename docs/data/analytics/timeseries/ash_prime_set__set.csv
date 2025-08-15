@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+ash_prime_set,pc,2025-08-15,83.667,95.0,21.0,41.0,4,155.334,15.0,-71.667,-46.13735563366681,-210.0631327089111,15.0,0.0

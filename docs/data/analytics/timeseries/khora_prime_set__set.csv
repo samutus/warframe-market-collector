@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+khora_prime_set,pc,2025-08-15,69.0,73.333,18.0,50.0,4,136.668,15.0,-67.668,-49.5126876810958,-193.41470360875576,15.0,0.0

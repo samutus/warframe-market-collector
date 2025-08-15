@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+odonata_prime_set,pc,2025-08-15,29.0,38.0,10.0,43.0,4,95.334,6.0,-66.334,-69.5806323032706,-143.8514244909672,6.0,0.0

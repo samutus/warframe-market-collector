@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+epitaph_prime_set,pc,2025-08-15,12.333,15.333,9.0,66.0,3,37.332,14.0,-24.999000000000002,-66.96399871423979,-62.58451547134328,9.0,0.0

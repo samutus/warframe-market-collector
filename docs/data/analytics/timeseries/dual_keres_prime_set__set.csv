@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+dual_keres_prime_set,pc,2025-08-15,38.0,50.0,10.0,23.0,3,72.666,3.0,-34.666,-47.70594225635097,-64.76621971682405,3.0,0.0

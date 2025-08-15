@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+helios_prime_set,pc,2025-08-15,41.667,51.333,7.0,34.0,4,126.668,3.0,-85.001,-67.10534625951306,-146.171992087676,3.0,0.0

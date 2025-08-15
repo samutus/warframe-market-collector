@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+vasto_prime_set,pc,2025-08-15,13.333,22.0,6.0,37.0,3,43.334,7.0,-30.001000000000005,-69.23201181520285,-60.37196665986593,6.0,0.0

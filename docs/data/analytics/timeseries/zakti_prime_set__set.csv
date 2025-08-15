@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+zakti_prime_set,pc,2025-08-15,23.5,34.667,2.0,26.0,3,58.666000000000004,11.0,-35.166000000000004,-59.942726621893435,-61.14605401939026,2.0,0.0

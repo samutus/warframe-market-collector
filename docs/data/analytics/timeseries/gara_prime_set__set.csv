@@ -1,0 +1,2 @@
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+gara_prime_set,pc,2025-08-15,51.667,55.0,14.0,63.0,4,98.0,14.0,-46.333,-47.27857142857143,-125.4720899676687,14.0,0.0
