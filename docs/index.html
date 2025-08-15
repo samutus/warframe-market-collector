@@ -15,6 +15,7 @@
         <select id="sort">
           <option value="roi">Trier par ROI%</option>
           <option value="margin">Trier par Marge</option>
+          <option value="kpi">Trier par KPI</option>
           <option value="buy">Trier par Prix BUY (set)</option>
           <option value="volume">Trier par Liquidité</option>
         </select>
@@ -31,17 +32,15 @@
         <div id="partsTable"></div>
       </div>
 
-      <!-- ... en-tête identique ... -->
-        <div class="card">
+      <div class="card">
         <h3>Prix (médian journalier)</h3>
         <div class="chart-box"><canvas id="priceChart"></canvas></div>
-        </div>
+      </div>
 
-        <div class="card">
+      <div class="card">
         <h3>Profondeurs (médian journalier)</h3>
         <div class="chart-box"><canvas id="depthChart"></canvas></div>
-        </div>
-
+      </div>
     </main>
   </div>
   <script src="app.js"></script>

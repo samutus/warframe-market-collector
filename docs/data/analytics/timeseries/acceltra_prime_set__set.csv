@@ -1,2 +1,2 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-acceltra_prime_set,pc,2025-08-15,17.333,18.333,13.0,66.0,4,20.333,16.0,-3.0,-14.754340235085822,-8.207425081876991,13.0,0.0
+acceltra_prime_set,pc,2025-08-15,17.333,18.333,13.0,66.0,4,40.666,16.0,-23.333,-57.37717011754291,-63.834616478478615,13.0,0.0

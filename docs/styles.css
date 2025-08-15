@@ -1,23 +1,28 @@
-/* --- Layout: split 50/50 --- */
+/* --- Layout: 50/50 --- */
 #app {
   display: grid;
   grid-template-columns: 1fr 1fr; /* 50% / 50% */
   height: 100vh;
 }
 
-/* Left/Right styling for readability */
 #left { border-right: 1px solid #e5e7eb; padding: 12px; overflow: auto; }
 #right { padding: 16px; overflow: auto; }
 
-@media (max-width: 1100px) {
-  #app { grid-template-columns: 1fr; }
-}
+@media (max-width: 1100px) { #app { grid-template-columns: 1fr; } }
 
 /* Controls + table on the left */
 .controls { display: flex; gap: 8px; margin-bottom: 8px; }
 .controls input, .controls select { flex: 1; padding: 8px; }
 .table { display: grid; grid-auto-rows: minmax(36px, auto); }
-.row { display: grid; grid-template-columns: 1fr 90px 90px 110px; gap: 8px; padding: 8px; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px 110px 100px; /* Set | ROI | Margin | KPI | BUY(set) */
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+}
 .row:hover { background: #f8fafc; }
 .header { font-weight: 600; position: sticky; top: 0; background: #fff; z-index: 1; }
 
@@ -33,23 +38,13 @@
 
 /* --- Charts: fixed container to prevent resize loops --- */
 .chart-box {
-  height: 260px;           /* ← modifie ici la taille des charts (ex. 220px / 300px) */
+  height: 260px;          /* ← change this to adjust chart size */
   max-height: 320px;
   width: 100%;
   overflow: hidden;
 }
 .chart-box canvas {
-  width: 100% !important;  /* canvas follows container size */
+  width: 100% !important;
   height: 100% !important;
   display: block;
-}
-
-/* left list now has 5 columns: Set | ROI% | Marge | KPI | BUY(set) */
-.row { 
-  display: grid; 
-  grid-template-columns: 1fr 80px 80px 110px 100px; 
-  gap: 8px; 
-  padding: 8px; 
-  border-bottom: 1px solid #f1f5f9; 
-  cursor: pointer; 
 }

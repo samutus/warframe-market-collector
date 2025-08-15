@@ -4,7 +4,7 @@
 #   docs/data/analytics/timeseries/<set>__set.csv ← daily series per set (incl. KPI)
 #   docs/data/analytics/parts_latest_by_set.csv   ← latest parts snapshot
 
-import os, glob
+import glob
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -16,8 +16,11 @@ def load_all_csv(pattern: str) -> pd.DataFrame:
     files = sorted(glob.glob(pattern))
     frames = []
     for f in files:
-        if os.path.getsize(f) > 0:
-            frames.append(pd.read_csv(f))
+        try:
+            if Path(f).stat().st_size > 0:
+                frames.append(pd.read_csv(f))
+        except Exception:
+            pass
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
 def normalize_str(df: pd.DataFrame, col: str, default: str | None = None, lower: bool = True):
@@ -110,35 +113,28 @@ def main():
                                      100.0 * sets_daily["margin"] / sets_daily["parts_cost"],
                                      np.nan)
 
-    # Opportunity score (kept for UI sorting & legacy)
-    # volume proxy = sqrt(buy_depth_med * min_part_eff_depth)
+    # Opportunity score (legacy volume-flavored ranking)
     vol_score = np.sqrt(
         np.maximum(0, sets_daily["buy_depth_med"].fillna(0)) *
         np.maximum(0, sets_daily["min_part_eff_depth"].fillna(0))
     )
     sets_daily["opportunity_score"] = sets_daily["margin"] * np.log1p(vol_score)
 
-
-    # --- NEW KPI ---
-    # daily_volume_cap = min( BUY depth on set , min effective SELL depth of parts )
+    # KPI: daily potential = margin × min(buy_depth_med, min_part_eff_depth)
     assembly_cap = np.maximum(0, sets_daily["min_part_eff_depth"].fillna(0))
     buyer_cap    = np.maximum(0, sets_daily["buy_depth_med"].fillna(0))
-    sets_daily["daily_volume_cap"]     = np.minimum(assembly_cap, buyer_cap)
-    sets_daily["kpi_daily_potential"]  = np.maximum(0, sets_daily["margin"].fillna(0)) * sets_daily["daily_volume_cap"]
+    sets_daily["daily_volume_cap"]    = np.minimum(assembly_cap, buyer_cap)
+    sets_daily["kpi_daily_potential"] = np.maximum(0, sets_daily["margin"].fillna(0)) * sets_daily["daily_volume_cap"]
 
-    # 30d average KPI per set (based on last 30 rows chronologically)
-    sd_sorted = sets_daily.sort_values(["set_url","date"])
-    kpi_30d = (sd_sorted
-        .groupby("set_url", as_index=False)
-        .apply(lambda g: g.tail(30)["kpi_daily_potential"].mean())
-        .rename(columns={None:"kpi_30d_avg"})
+    # KPI 30d average (last 30 samples)
+    kpi_30d = (sets_daily
+        .sort_values(["set_url","date"])
+        .groupby("set_url")["kpi_daily_potential"]
+        .apply(lambda s: s.tail(30).mean())
+        .reset_index(name="kpi_30d_avg")
     )
-    # pandas >=2 returns set_url as index if not careful
-    if "set_url" not in kpi_30d.columns:
-        kpi_30d = kpi_30d.reset_index().rename(columns={"set_url":"set_url", 0:"kpi_30d_avg"})
-    kpi_30d = kpi_30d[["set_url","kpi_30d_avg"]]
 
-    # Export per-set series (will include KPI columns)
+    # Export per-set daily series (includes KPI columns)
     for set_url, g in sets_daily.groupby("set_url"):
         g.to_csv(ANALYTICS_DIR / "timeseries" / f"{set_url}__set.csv", index=False)
 
@@ -156,14 +152,11 @@ def main():
         "kpi_daily_potential":"kpi_daily"
     })
 
-
     # Attach 30d KPI avg
     sets_index = sets_index.merge(kpi_30d, on="set_url", how="left")
-
-    # Export index
     sets_index.to_csv(ANALYTICS_DIR / "sets_index.csv", index=False)
 
-    # Latest parts snapshot for UI table
+    # Latest parts snapshot for the UI (dedup)
     latest_part = (parts_daily
         .sort_values(["part_url","date"])
         .groupby(["part_url"], as_index=False)

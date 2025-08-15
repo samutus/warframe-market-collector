@@ -1,9 +1,9 @@
-name: Every 6h (collect all + analytics + publish)
+name: Every 6h (collect prime + analytics + publish)
 
 on:
   schedule:
-    - cron: "0 */6 * * *"    # 00:00, 06:00, 12:00, 18:00 UTC
-  workflow_dispatch: {}       # lancement manuel
+    - cron: "0 */6 * * *"   # every 6 hours (UTC)
+  workflow_dispatch: {}
 
 concurrency:
   group: sixhourly
@@ -36,6 +36,7 @@ jobs:
           WFM_ONLY_PRIME: "true"
           WFM_STRICT_SETS_PARTS: "true"
           COLLECT_STATS48H: "false"
+          WFM_MAX_ITEMS: "0"      # 0 = no dev limit in prod
         run: python collector/snapshots_6h_all.py
 
       - name: Build analytics for UI
