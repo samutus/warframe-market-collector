@@ -72,7 +72,7 @@ function renderTable() {
       <div>${formatNum(r.roi_pct)}</div>
       <div>${formatNum(r.margin)}</div>
       <div>${formatNum(r.kpi_daily)}</div>
-      <div>${formatNum(r.buy_med)}</div>
+      <div>${formatNum(r.set_sell_med)}</div>
     `;
     row.addEventListener("click", () => selectSet(r));
     el.appendChild(row);
@@ -104,7 +104,7 @@ function renderPartsTable(setUrl) {
   for (const r of rows) {
     const key = String(r.part_url || "");
     const qty = parseInt(r.quantity_for_set || "1", 10);
-    const price = parseFloat(r.sell_med_latest);
+    const price = parseFloat(r.buy_med_latest);
     if (!uniq.has(key)) {
       uniq.set(key, { part: key, price: isNaN(price) ? null : price, qty: isNaN(qty) ? 1 : qty });
     } else {
@@ -130,33 +130,35 @@ async function selectSet(r) {
   current = r;
   document.getElementById("itemTitle").textContent = r.set_url;
   document.getElementById("meta").textContent =
-    `Dernière MAJ: ${r.latest_date} | BUY(set): ${formatNum(r.buy_med)} | `
-    + `Coût pièces: ${formatNum(r.parts_cost)} | Marge: ${formatNum(r.margin)} | ROI: ${formatNum(r.roi_pct)}% | `
+    `Dernière MAJ: ${r.latest_date} | SELL(set): ${formatNum(r.set_sell_med)} | `
+    + `Coût pièces (BUY): ${formatNum(r.parts_cost_buy)} | Marge: ${formatNum(r.margin)} | ROI: ${formatNum(r.roi_pct)}% | `
     + `KPI 30j moy: ${formatNum(r.kpi_30d_avg)}`;
+
 
   renderPartsTable(r.set_url);
 
   // Load per-set time series (two charts only)
   const setTs = await csvToRows(`${SET_TS_DIR}${r.set_url}__set.csv`);
   const dates  = setTs.map(x => x.date);
-  const buy    = setTs.map(x => +x.buy_med || null);
-  const pcost  = setTs.map(x => +x.parts_cost || null);
   const margin = setTs.map(x => +x.margin || null);
   const bdepth = setTs.map(x => +x.buy_depth_med || null);      // orange (set buy side)
   const bottl  = setTs.map(x => +x.min_part_eff_depth || null); // green  (parts sell bottleneck)
+  const setSell = setTs.map(x => +x.sell_med || null);        // SELL(set)
+  const partsBuy= setTs.map(x => +x.parts_cost_buy || null);  // BUY(parts)
 
   // Destroy previous charts and reset canvases
   if (priceChart) priceChart.destroy();
   if (depthChart) depthChart.destroy();
   resetCanvasSize("priceChart");
   resetCanvasSize("depthChart");
+  
 
   // Chart 1: Prices (3 curves)
   priceChart = buildLineChart("priceChart", dates, [
-    { label: "BUY (set) – median", data: buy,    borderColor: "#2563eb", backgroundColor: "transparent" },
-    { label: "Parts cost – median", data: pcost, borderColor: "#ef4444", backgroundColor: "transparent" },
-    { label: "Margin",              data: margin, borderColor: "#0ea5e9", backgroundColor: "transparent" }
-  ]);
+    { label: "SELL (set) – median", data: setSell, borderColor: "#2563eb", backgroundColor: "transparent" },
+    { label: "Parts cost (BUY) – median", data: partsBuy, borderColor: "#ef4444", backgroundColor: "transparent" },
+    { label: "Margin", data: margin, borderColor: "#0ea5e9", backgroundColor: "transparent" }
+    ]);
 
   // Chart 2: Depths (2 curves) — green = parts (sell), orange = set (buy)
   depthChart = buildLineChart("depthChart", dates, [

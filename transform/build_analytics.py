@@ -65,6 +65,14 @@ def main():
     normalize_str(df_comps, "platform", "pc")
     normalize_str(df_comps, "set_url")
     normalize_str(df_comps, "part_url")
+
+    df_comps = (
+        df_comps
+        .dropna(subset=["set_url","part_url"])
+        .groupby(["set_url","platform","part_url"], as_index=False)
+        .agg(quantity_for_set=("quantity_for_set", "max"))
+    )
+
     if "quantity_for_set" not in df_comps.columns:
         df_comps["quantity_for_set"] = 1
     df_comps["quantity_for_set"] = df_comps["quantity_for_set"].fillna(1).astype(int)
@@ -94,24 +102,28 @@ def main():
     # Join components with part prices/depths
     comp = df_comps.merge(craftable_prime[["set_url","platform","n_parts"]],
                           on=["set_url","platform"], how="inner")
+    
+    # Join components with part prices/depths
     comp_prices = comp.merge(parts_daily, on=["part_url","platform"], how="left")
-    comp_prices["weighted_cost"] = comp_prices["quantity_for_set"] * comp_prices["sell_med"]
-    # Effective depth per part: sell_depth // qty
+    # COST: use BUY side for parts (we place buy orders on parts)
+    comp_prices["weighted_cost"] = comp_prices["quantity_for_set"] * comp_prices["buy_med"]
+    # Effective depth per part still from SELL side (how many sellers can fill our buy orders)
     comp_prices["eff_part_depth"] = (comp_prices["sell_depth_med"] // comp_prices["quantity_for_set"]).fillna(0)
 
     # Aggregate parts → set/day
     set_costs = (comp_prices
-        .groupby(["set_url","platform","date"], as_index=False)
-        .agg(parts_cost=("weighted_cost","sum"),
-             min_part_eff_depth=("eff_part_depth","min"))
+    .groupby(["set_url","platform","date"], as_index=False)
+    .agg(parts_cost_buy=("weighted_cost","sum"),
+         min_part_eff_depth=("eff_part_depth","min"))
     )
+
 
     # Merge with sets BUY side and compute margin/ROI
     sets_daily = sets_daily.merge(set_costs, on=["set_url","platform","date"], how="left")
-    sets_daily["margin"] = sets_daily["buy_med"] - sets_daily["parts_cost"]
-    sets_daily["roi_pct"] = np.where(sets_daily["parts_cost"] > 0,
-                                     100.0 * sets_daily["margin"] / sets_daily["parts_cost"],
-                                     np.nan)
+    sets_daily["margin"] = sets_daily["sell_med"] - sets_daily["parts_cost_buy"]
+    sets_daily["roi_pct"] = np.where(sets_daily["parts_cost_buy"] > 0,
+                                    100.0 * sets_daily["margin"] / sets_daily["parts_cost_buy"],
+                                    np.nan)
 
     # Opportunity score (legacy volume-flavored ranking)
     vol_score = np.sqrt(
@@ -144,13 +156,19 @@ def main():
         .groupby("set_url", as_index=False)
         .tail(1)
     )
+
     sets_index = latest_by_set[[
-        "set_url","platform","date","buy_med","parts_cost","margin","roi_pct",
-        "buy_depth_med","min_part_eff_depth","kpi_daily_potential","opportunity_score"
+        "set_url","platform","date",
+        "sell_med",                # SELL price of the set
+        "parts_cost_buy",          # BUY cost of parts
+        "margin","roi_pct",
+        "buy_depth_med","min_part_eff_depth",
+        "kpi_daily_potential","opportunity_score"
     ]].rename(columns={
         "date":"latest_date",
-        "kpi_daily_potential":"kpi_daily"
+        "sell_med":"set_sell_med"
     })
+
 
     # Attach 30d KPI avg
     sets_index = sets_index.merge(kpi_30d, on="set_url", how="left")
@@ -160,18 +178,18 @@ def main():
     latest_part = (parts_daily
         .sort_values(["part_url","date"])
         .groupby(["part_url"], as_index=False)
-        .tail(1)[["part_url","platform","date","sell_med","sell_depth_med"]]
+        .tail(1)[["part_url","platform","date","buy_med","sell_depth_med"]]
         .rename(columns={"date":"latest_date_part",
-                         "sell_med":"sell_med_latest",
-                         "sell_depth_med":"sell_depth_med_latest"})
+                        "buy_med":"buy_med_latest",
+                        "sell_depth_med":"sell_depth_med_latest"})
     )
     parts_latest = comp.merge(latest_part, on=["part_url","platform"], how="left")
     parts_latest = parts_latest.drop_duplicates(subset=["set_url","part_url","platform"])
     parts_latest = parts_latest[[
         "set_url","platform","part_url","quantity_for_set",
-        "sell_med_latest","sell_depth_med_latest","latest_date_part"
+        "buy_med_latest","sell_depth_med_latest","latest_date_part"
     ]]
-    parts_latest.to_csv(ANALYTICS_DIR / "parts_latest_by_set.csv", index=False)
+
 
     print("[ANALYTICS] sets_index/timeseries/parts_latest built (incl. KPI).")
 
