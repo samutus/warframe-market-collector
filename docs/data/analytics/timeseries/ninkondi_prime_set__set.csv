@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-ninkondi_prime_set,pc,2025-08-15,38.333,48.0,6.0,39.0,3,83.332,7.0,-44.998999999999995,-53.999663994623916,-90.55291916027153,6.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+ninkondi_prime_set,pc,2025-08-15,38.333,48.0,6.0,39.0,3,24.0,7.0,24.0,100.0,48.29596346244399,6.0,144.0

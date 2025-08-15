@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-sevagoth_prime_set,pc,2025-08-15,20.667,20.0,17.0,129.0,4,34.666000000000004,28.0,-13.999000000000002,-40.3825073559107,-43.78221498097998,17.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+sevagoth_prime_set,pc,2025-08-15,20.667,20.0,17.0,129.0,4,13.0,28.0,7.0,53.84615384615385,21.892671252722323,17.0,119.0

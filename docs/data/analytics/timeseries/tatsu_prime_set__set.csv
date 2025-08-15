@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-tatsu_prime_set,pc,2025-08-15,12.667,23.667,8.0,35.0,3,46.0,10.0,-33.333,-72.46304347826086,-76.56579093315379,8.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+tatsu_prime_set,pc,2025-08-15,12.667,23.667,8.0,35.0,3,8.333,10.0,15.334000000000001,184.0153606144246,35.222147366543076,8.0,122.67200000000001

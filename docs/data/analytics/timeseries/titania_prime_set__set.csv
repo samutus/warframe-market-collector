@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-titania_prime_set,pc,2025-08-15,52.0,60.0,21.0,92.0,4,107.332,21.0,-55.331999999999994,-51.55219319494651,-171.0335610292223,21.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+titania_prime_set,pc,2025-08-15,52.0,60.0,21.0,92.0,4,38.668,21.0,21.332,55.16706320471709,65.9381176150396,21.0,447.97200000000004

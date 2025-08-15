@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-venka_prime_set,pc,2025-08-15,78.333,90.0,6.0,36.0,3,159.32999999999998,7.0,-80.99699999999999,-50.83600075315383,-162.99283969031563,6.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+venka_prime_set,pc,2025-08-15,78.333,90.0,6.0,36.0,3,55.334,7.0,34.666,62.64864278743628,69.75949455787847,6.0,207.99599999999998

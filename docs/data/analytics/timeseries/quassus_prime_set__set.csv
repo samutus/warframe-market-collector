@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-quassus_prime_set,pc,2025-08-15,23.667,29.333,7.0,45.0,3,43.998000000000005,9.0,-20.331000000000003,-46.208918587208515,-44.529533106169005,7.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+quassus_prime_set,pc,2025-08-15,23.667,29.333,7.0,45.0,3,18.666,9.0,10.666999999999998,57.14668381013607,23.363166083493415,7.0,74.66899999999998

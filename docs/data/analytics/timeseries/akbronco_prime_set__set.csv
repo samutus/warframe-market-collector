@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-akbronco_prime_set,pc,2025-08-15,3.0,8.333,1.0,23.0,2,6.666,19.0,-3.6660000000000004,-54.99549954995499,-6.15432878197695,1.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+akbronco_prime_set,pc,2025-08-15,3.0,8.333,1.0,23.0,2,2.0,19.0,6.333,316.65000000000003,10.631577789487185,1.0,6.333

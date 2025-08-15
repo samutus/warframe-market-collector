@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-dakra_prime_set,pc,2025-08-15,26.0,33.333,6.0,27.0,3,71.334,6.0,-45.334,-63.551742507079375,-88.21589069727358,6.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+dakra_prime_set,pc,2025-08-15,26.0,33.333,6.0,27.0,3,18.0,6.0,15.332999999999998,85.18333333333332,29.836640315465115,6.0,91.99799999999999

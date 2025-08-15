@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-equinox_prime_set,pc,2025-08-15,50.0,53.333,16.0,70.0,4,88.0,22.0,-38.0,-43.18181818181818,-113.38226632606359,16.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+equinox_prime_set,pc,2025-08-15,50.0,53.333,16.0,70.0,4,22.667,22.0,30.665999999999997,135.28918692372167,91.4994889251333,16.0,490.65599999999995

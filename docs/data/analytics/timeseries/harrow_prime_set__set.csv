@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-harrow_prime_set,pc,2025-08-15,47.333,57.667,11.0,40.0,4,105.334,16.0,-58.001000000000005,-55.063892000683545,-154.161674138147,11.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+harrow_prime_set,pc,2025-08-15,47.333,57.667,11.0,40.0,4,33.5,16.0,24.167,72.14029850746269,64.23380939805517,11.0,265.837

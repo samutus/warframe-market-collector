@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-ankyros_prime_set,pc,2025-08-15,36.667,47.0,8.0,20.0,3,86.0,6.0,-49.333,-57.3639534883721,-102.14034713009465,6.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+ankyros_prime_set,pc,2025-08-15,36.667,47.0,8.0,20.0,3,25.166,6.0,21.834,86.7599141699118,45.20569069869026,6.0,131.004

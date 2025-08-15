@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-yareli_prime_set,pc,2025-08-15,48.333,52.667,22.0,83.0,4,90.0,21.0,-41.667,-46.29666666666667,-129.72007287440812,21.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+yareli_prime_set,pc,2025-08-15,48.333,52.667,22.0,83.0,4,31.167,21.0,21.5,68.98321943080822,66.9350221230176,21.0,451.5

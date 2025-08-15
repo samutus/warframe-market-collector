@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-cernos_prime_set,pc,2025-08-15,37.0,59.0,8.0,26.0,5,88.666,10.0,-51.666,-58.27036293505966,-118.67663139688368,8.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+cernos_prime_set,pc,2025-08-15,37.0,59.0,8.0,26.0,5,11.0,10.0,48.0,436.3636363636364,110.25584150215649,8.0,384.0

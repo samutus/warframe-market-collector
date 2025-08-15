@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-vectis_prime_set,pc,2025-08-15,73.0,89.667,11.0,33.0,4,142.0,7.0,-69.0,-48.59154929577465,-157.30788792155627,7.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+vectis_prime_set,pc,2025-08-15,73.0,89.667,11.0,33.0,4,42.0,7.0,47.667,113.49285714285713,108.67239266024382,7.0,333.669

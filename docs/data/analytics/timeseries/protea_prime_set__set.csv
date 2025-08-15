@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-protea_prime_set,pc,2025-08-15,29.0,32.667,14.0,82.0,4,55.331999999999994,24.0,-26.331999999999994,-47.58909853249475,-77.98679863107778,14.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+protea_prime_set,pc,2025-08-15,29.0,32.667,14.0,82.0,4,26.499000000000002,24.0,6.167999999999999,23.276350050945315,18.267604965687674,14.0,86.35199999999999

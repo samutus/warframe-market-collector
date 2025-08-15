@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-vauban_prime_set,pc,2025-08-15,124.0,135.667,16.0,35.0,4,224.666,14.0,-100.666,-44.80695788414803,-278.89524268630987,14.0,0.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+vauban_prime_set,pc,2025-08-15,124.0,135.667,16.0,35.0,4,96.667,14.0,39.0,40.34468846659149,108.04953474625081,14.0,546.0
