@@ -1,4 +1,4 @@
-// Tailwind UI for craftable Prime sets with normalized KPI* and sort direction toggle
+// Tailwind UI for craftable Prime sets – KPI normalisé (back) + heatmap + tri asc/desc
 
 // ---- Data endpoints (relative to docs/) ----
 const INDEX_URL = "data/analytics/sets_index.csv";
@@ -11,9 +11,6 @@ let filtered = [];
 let current = null;
 let priceChart, depthChart;
 let sortAsc = false; // false = décroissant (par défaut)
-
-// cache for per-set latest volume min, to avoid re-fetching
-const volCache = new Map();
 
 // ---- Helpers ----
 function resetCanvasSize(id) {
@@ -48,7 +45,7 @@ function buildLineChart(id, labels, datasets) {
   });
 }
 
-// CSV minimal parser
+// Minimal CSV parser (valeurs simples, séparateur virgule)
 async function csvToRows(url) {
   const res = await fetch(url);
   const txt = await res.text();
@@ -70,76 +67,26 @@ function formatNum(x, d = 1) {
   return v.toFixed(d);
 }
 
-// ---- KPI (normalized) ----
-const KPI_CONST = {
-  ROI_REF: 150,
-  ROI_SHARPNESS: 60,
-  MARGIN_FLOOR: 5,
-  MARGIN_TARGET: 20,
-};
-function sigmoid(z) { return 1 / (1 + Math.exp(-z)); }
-function kpiCompositeRaw({ roi_pct, margin }, volMin) {
-  const { ROI_REF, ROI_SHARPNESS, MARGIN_FLOOR, MARGIN_TARGET } = KPI_CONST;
-  const f_roi = sigmoid((n(roi_pct) - ROI_REF) / ROI_SHARPNESS); // 0..1
-  const f_margin = Math.min(Math.max((n(margin) - MARGIN_FLOOR) / Math.max(1, (MARGIN_TARGET - MARGIN_FLOOR)), 0), 1);
-  const v = Math.max(0, n(volMin));
-  return v * Math.max(0, n(margin)) * f_roi * f_margin; // unnormalized
+// ---- KPI (fourni par le back) ----
+// On lit kpi_norm (0..1) ou à défaut kpi_0_100/100
+function getKpi01(r) {
+  const a = parseFloat(r.kpi_norm);
+  if (Number.isFinite(a)) return a;
+  const b = parseFloat(r.kpi_0_100);
+  if (Number.isFinite(b)) return b / 100;
+  return null;
 }
-// Robust normalization to [0,1] with ~P90 mapped to 0.8
-let kpiScale = { lo: 0, hi: 1 };
-function quantile(arr, q) {
-  if (!arr.length) return 0;
-  const p = (arr.length - 1) * q;
-  const b = Math.floor(p), t = p - b;
-  if (arr[b + 1] !== undefined) return arr[b] * (1 - t) + arr[b + 1] * t;
-  return arr[b];
-}
-function recomputeKpiScale() {
-  const samples = setsIndex
-    .map(r => (r.vol_min == null ? null : kpiCompositeRaw(r, r.vol_min)))
-    .filter(x => Number.isFinite(x) && x > 0)
-    .sort((a,b)=>a-b);
-  if (samples.length < 5) {
-    const mx = Math.max(1, ...samples, 1);
-    kpiScale = { lo: 0, hi: mx };
-    return;
-  }
-  const p10 = quantile(samples, 0.10);
-  const p90 = quantile(samples, 0.90);
-  let lo = p10;
-  let hi = lo + (p90 - lo) / 0.8; // map ~P90 -> 0.8
-  if (!Number.isFinite(hi) || hi <= lo) hi = lo + (p90 || 1) + 1;
-  kpiScale = { lo, hi };
-}
-function kpiCompositeNorm({ roi_pct, margin }, volMin) {
-  const raw = kpiCompositeRaw({ roi_pct, margin }, volMin);
-  const z = (raw - kpiScale.lo) / (kpiScale.hi - kpiScale.lo);
-  return Math.max(0, Math.min(1, z));
-}
-function getRowKpiNorm(r) {
-  if (r.vol_min == null) return null;
-  return kpiCompositeNorm(r, r.vol_min);
+
+// Map KPI [0,1] -> couleur (0=rouge → 1=vert)
+function kpiColorFrom01(x) {
+  const v = Number.isFinite(+x) ? +x : 0;
+  const hue = 0 + (140 * v); // 0 (rouge) -> 140 (vert)
+  const sat = 85;            // %
+  const light = 45;          // %
+  return `hsl(${hue} ${sat}% ${light}%)`;
 }
 
 // ---------- LEFT PANEL (list) ----------
-async function ensureVolAndUpdateCell(row, idx) {
-  const vol = await getLatestVolMin(row.set_url);
-  row.vol_min = vol;
-
-  // update volume cell
-  const volCell = document.getElementById(`vol-cell-${idx}`);
-  if (volCell) volCell.textContent = vol == null ? "–" : formatNum(vol, 0);
-
-  // update KPI cell (needs normalization scale)
-  recomputeKpiScale();
-  const kpiCell = document.getElementById(`kpi-cell-${idx}`);
-  const kpin = getRowKpiNorm(row);
-  if (kpiCell) kpiCell.textContent = kpin == null ? "…" : Math.round(kpin * 100);
-
-  // and refresh ordering if sorting by KPI/volume
-  applyFilters();
-}
-
 function renderTable() {
   const el = document.getElementById("itemTable");
   el.innerHTML = "";
@@ -161,19 +108,23 @@ function renderTable() {
     const row = document.createElement("div");
     row.className =
       "grid grid-cols-[1fr,90px,90px,110px,90px] gap-2 items-center px-3 py-2 border-b border-slate-100 cursor-pointer hover:bg-slate-50";
-    const kpin = getRowKpiNorm(r);
+
+    const kpin = getKpi01(r);
+    const kpiTxt = (kpin == null ? "…" : Math.round(kpin * 100));
+    const kpiStyle = `style="color:${kpiColorFrom01(kpin)}"`;
+
+    const vol = parseFloat(r.vol_min);
+    const volTxt = Number.isFinite(vol) ? formatNum(vol, 0) : "…";
+
     row.innerHTML = `
       <div class="truncate font-medium text-slate-800">${r.set_url}</div>
       <div class="text-right">${formatNum(r.roi_pct)}</div>
       <div class="text-right">${formatNum(r.margin)}</div>
-      <div class="text-right" id="kpi-cell-${idx}">${kpin == null ? "…" : Math.round(kpin*100)}</div>
-      <div class="text-right" id="vol-cell-${idx}">${r.vol_min == null ? "…" : formatNum(r.vol_min, 0)}</div>
+      <div class="text-right" id="kpi-cell-${idx}" ${kpiStyle}>${kpiTxt}</div>
+      <div class="text-right" id="vol-cell-${idx}">${volTxt}</div>
     `;
     row.addEventListener("click", () => selectSet(r));
     el.appendChild(row);
-
-    // lazy load vol if missing
-    if (r.vol_min == null) ensureVolAndUpdateCell(r, idx);
   });
 }
 
@@ -183,23 +134,32 @@ function applyFilters() {
 
   filtered = setsIndex.filter((r) => (r.set_url || "").toLowerCase().includes(q));
 
-  const key =
-    sort === "roi" ? "roi_pct" :
-    sort === "margin" ? "margin" :
-    sort === "kpi" ? "kpi_norm" :
-    sort === "volume" ? "vol_min" :
-    "opportunity_score";
-
+  // Clé de tri -> valeur numérique
   filtered.sort((a, b) => {
     let av, bv;
-    if (key === "kpi_norm") { av = getRowKpiNorm(a); bv = getRowKpiNorm(b); }
-    else if (key === "vol_min") { av = a.vol_min; bv = b.vol_min; }
-    else { av = n(a[key]); bv = n(b[key]); }
+    if (sort === "kpi") {
+      av = getKpi01(a);
+      bv = getKpi01(b);
+    } else if (sort === "volume") {
+      av = parseFloat(a.vol_min);
+      bv = parseFloat(b.vol_min);
+    } else if (sort === "roi") {
+      av = parseFloat(a.roi_pct);
+      bv = parseFloat(b.roi_pct);
+    } else if (sort === "margin") {
+      av = parseFloat(a.margin);
+      bv = parseFloat(b.margin);
+    } else {
+      av = parseFloat(a.opportunity_score);
+      bv = parseFloat(b.opportunity_score);
+    }
 
     // Unknowns last
-    if (av == null && bv == null) return 0;
-    if (av == null) return 1;
-    if (bv == null) return -1;
+    const aU = !(Number.isFinite(av));
+    const bU = !(Number.isFinite(bv));
+    if (aU && bU) return 0;
+    if (aU) return 1;
+    if (bU) return -1;
 
     return sortAsc ? (av - bv) : (bv - av);
   });
@@ -207,31 +167,7 @@ function applyFilters() {
   renderTable();
 }
 
-// ---- Compute latest volume min for a set ----
-async function getLatestVolMin(setUrl) {
-  if (volCache.has(setUrl)) return volCache.get(setUrl);
-  try {
-    const rows = await csvToRows(`${SET_TS_DIR}${setUrl}__set.csv`);
-    let vol = null;
-    for (let i = rows.length - 1; i >= 0; i--) {
-      const b = parseFloat(rows[i].buy_depth_med);
-      const s = parseFloat(rows[i].min_part_eff_depth);
-      if (Number.isFinite(b) || Number.isFinite(s)) {
-        vol = Math.min(Number.isFinite(b) ? b : Infinity, Number.isFinite(s) ? s : Infinity);
-        if (!Number.isFinite(vol)) vol = (Number.isFinite(b) ? b : s);
-        break;
-      }
-    }
-    if (!Number.isFinite(vol)) vol = null;
-    volCache.set(setUrl, vol);
-    return vol;
-  } catch (e) {
-    console.warn("Failed to load timeseries for", setUrl, e);
-    volCache.set(setUrl, null);
-    return null;
-  }
-}
-
+// ---------- RIGHT PANEL (detail) ----------
 function renderPartsTable() {
   const container = document.getElementById("partsTable");
   const rows = partsLatest
@@ -249,7 +185,7 @@ function renderPartsTable() {
         part: key,
         price: Number.isFinite(price) ? price : null,
         qty: Number.isFinite(qty) ? qty : 1,
-        src: r.unit_cost_source || (n(r.buy_med_latest) > 0 ? "BUY" : (n(r.sell_med_latest) > 0 ? "SELL" : ""))
+        src: r.unit_cost_source || (n(r.buy_med_latest) > 0 ? "BUY" : (n(r.sell_med_latest) > 0 ? "SELL" : "")),
       });
     } else {
       const u = uniq.get(key);
@@ -299,7 +235,28 @@ async function selectSet(r) {
   const title = document.getElementById("itemTitle");
   title.textContent = r.set_url;
 
-  // Load time series for the set (two charts + volume)
+  // KPI + Vol (back)
+  const kpin = getKpi01(r);
+  const kpiHtml = (kpin == null)
+    ? "…"
+    : `<span style="color:${kpiColorFrom01(kpin)}">${Math.round(kpin*100)}</span>`;
+
+  // right meta
+  const meta = document.getElementById("meta");
+  meta.innerHTML = `
+    <div class="flex flex-wrap gap-2 items-center">
+      <span class="text-slate-500 text-xs">Dernière MAJ: ${r.latest_date}</span>
+      ${metaBadge("SELL(set)", formatNum(r.set_sell_med), "sky")}
+      ${metaBadge("Coût pièces (BUY)", formatNum(r.parts_cost_buy), "slate")}
+      ${metaBadge("Marge", formatNum(r.margin), "emerald")}
+      ${metaBadge("ROI", formatNum(r.roi_pct) + "%", "amber")}
+      ${metaBadge("Vol (min)", Number.isFinite(parseFloat(r.vol_min)) ? formatNum(r.vol_min, 0) : "–", "violet")}
+      ${metaBadge("KPI (0–100)", kpiHtml, "sky")}
+    </div>`;
+
+  renderPartsTable();
+
+  // Charger la timeserie pour les graphiques (prix + profondeurs)
   const setTs = await csvToRows(`${SET_TS_DIR}${r.set_url}__set.csv`);
   const dates   = setTs.map((x) => x.date);
   const margin  = setTs.map((x) => +x.margin || null);
@@ -308,56 +265,24 @@ async function selectSet(r) {
   const setSell = setTs.map((x) => +x.sell_med || null);
   const partsBuy= setTs.map((x) => +x.parts_cost_buy || null);
 
-  // latest volume (min of the two depths)
-  let latestVol = null;
-  for (let i = setTs.length - 1; i >= 0; i--) {
-    const b = bdepth[i], s = bottl[i];
-    if (Number.isFinite(b) || Number.isFinite(s)) {
-      latestVol = Math.min(Number.isFinite(b) ? b : Infinity, Number.isFinite(s) ? s : Infinity);
-      if (!Number.isFinite(latestVol)) latestVol = Number.isFinite(b) ? b : s;
-      break;
-    }
-  }
-  r.vol_min = latestVol;
-  volCache.set(r.set_url, latestVol);
-  recomputeKpiScale();
-
-  // right meta
-  const meta = document.getElementById("meta");
-  const kpiStar = kpiCompositeNorm(r, latestVol);
-  meta.innerHTML = `
-    <div class="flex flex-wrap gap-2 items-center">
-      <span class="text-slate-500 text-xs">Dernière MAJ: ${r.latest_date}</span>
-      ${metaBadge("SELL(set)", formatNum(r.set_sell_med), "sky")}
-      ${metaBadge("Coût pièces (BUY)", formatNum(r.parts_cost_buy), "slate")}
-      ${metaBadge("Marge", formatNum(r.margin), "emerald")}
-      ${metaBadge("ROI", formatNum(r.roi_pct) + "%", "amber")}
-      ${metaBadge("Vol (min)", latestVol == null ? "–" : formatNum(latestVol, 0), "violet")}
-      ${metaBadge("KPI* (0–100)", Math.round(kpiStar*100), "sky")}
-    </div>`;
-
-  renderPartsTable();
-
-  // Destroy previous charts and reset canvases
+  // Reset + render charts
   if (priceChart) priceChart.destroy();
   if (depthChart) depthChart.destroy();
   resetCanvasSize("priceChart");
   resetCanvasSize("depthChart");
 
-  // Chart 1: Prices
   priceChart = buildLineChart("priceChart", dates, [
     { label: "SELL (set) – median", data: setSell, borderColor: "#2563eb", backgroundColor: "transparent" },
     { label: "Parts cost (BUY) – median", data: partsBuy, borderColor: "#ef4444", backgroundColor: "transparent" },
     { label: "Margin", data: margin, borderColor: "#0ea5e9", backgroundColor: "transparent" },
   ]);
 
-  // Chart 2: Depths
   depthChart = buildLineChart("depthChart", dates, [
     { label: "Min eff. SELL depth (parts)", data: bottl, borderColor: "#22c55e", backgroundColor: "transparent" },
     { label: "BUY depth (set) – median", data: bdepth, borderColor: "#f59e0b", backgroundColor: "transparent" },
   ]);
 
-  // Re-render left table (may affect KPI/volume values and ordering)
+  // Re-render list (pour refléter sélection si besoin)
   applyFilters();
 }
 
@@ -368,29 +293,15 @@ async function boot() {
     csvToRows(PARTS_LATEST_URL),
   ]);
 
-  // initialize vol_min from cache (none yet)
-  setsIndex.forEach((r) => { r.vol_min = volCache.get(r.set_url) ?? null; });
-
-  // UI: sort direction button
+  // UI: bouton de direction du tri
   const sortBtn = document.getElementById("sortDirBtn");
   const sortIcon = document.getElementById("sortDirIcon");
   function updateSortIcon(){ sortIcon.style.transform = sortAsc ? "rotate(180deg)" : "rotate(0deg)"; }
   sortBtn.addEventListener("click", ()=>{ sortAsc = !sortAsc; updateSortIcon(); applyFilters(); });
   updateSortIcon();
 
-  recomputeKpiScale();
   applyFilters();
   document.getElementById("search").addEventListener("input", applyFilters);
   document.getElementById("sort").addEventListener("change", applyFilters);
-
-  // warm up: fetch volume for the first ~20 rows to make sorting by volume/KPI nicer
-  const top = setsIndex.slice(0, 20);
-  for (const r of top) {
-    if (r.vol_min == null) {
-      r.vol_min = await getLatestVolMin(r.set_url);
-      recomputeKpiScale();
-      applyFilters();
-    }
-  }
 }
 boot();

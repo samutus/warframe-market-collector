@@ -238,21 +238,56 @@ def main():
     # 2) sets_index.csv (latest row per set/platform)
     latest_by_set = (
         sets_daily.sort_values(["set_url", "platform", "date"])
-                  .groupby(["set_url", "platform"], as_index=False)
-                  .tail(1)
-                  .rename(columns={"date": "latest_date"})
+                .groupby(["set_url", "platform"], as_index=False)
+                .tail(1)
+                .rename(columns={"date": "latest_date"})
     )
+
+    # === AJOUT : échelle de normalisation basée sur l’instantané courant ===
+    # On calibre l’échelle à partir des KPI "du jour" (une ligne par set)
+    samples = latest_by_set["kpi_daily_potential"].dropna().values
+    if len(samples) >= 5:
+        p10, p90 = np.quantile(samples, [0.10, 0.90])
+        lo = float(p10)
+        hi = float(lo + (p90 - lo) / 0.8) if (p90 > lo) else float(lo + max(1.0, p90) + 1.0)
+    else:
+        lo, hi = 0.0, float(max(1.0, np.nanmax(samples) if len(samples) else 1.0))
+
+    def _norm(vec: pd.Series, lo: float, hi: float) -> pd.Series:
+        z = (vec - lo) / max(1e-9, (hi - lo))
+        return z.clip(lower=0.0, upper=1.0)
+
+    # Vol min (bouchon) + KPI normalisé pour TOUTES les dates (timeseries)
+    sets_daily["vol_min"] = np.minimum(
+        np.maximum(0, sets_daily["buy_depth_med"].fillna(0)),
+        np.maximum(0, sets_daily["min_part_eff_depth"].fillna(0))
+    )
+    sets_daily["kpi_norm"] = _norm(sets_daily["kpi_daily_potential"], lo, hi)
+    sets_daily["kpi_0_100"] = (sets_daily["kpi_norm"] * 100).round().astype("Int64")
+
+    # === AJOUT : vol_min + KPI normalisé dans l’instantané latest_by_set ===
+    latest_by_set["vol_min"] = np.minimum(
+        np.maximum(0, latest_by_set["buy_depth_med"].fillna(0)),
+        np.maximum(0, latest_by_set["min_part_eff_depth"].fillna(0))
+    )
+    latest_by_set["kpi_norm"] = _norm(latest_by_set["kpi_daily_potential"], lo, hi)
+    latest_by_set["kpi_0_100"] = (latest_by_set["kpi_norm"] * 100).round().astype("Int64")
+
+    # --- APRES : sets_index enrichi avec vol_min + KPI normalisé ---
     sets_index = latest_by_set[[
         "set_url", "platform", "latest_date",
         "sell_med", "parts_cost_buy", "margin", "roi_pct",
-        "buy_depth_med", "min_part_eff_depth",
-        "kpi_daily_potential", "opportunity_score"
+        "buy_depth_med", "min_part_eff_depth", "vol_min",
+        "kpi_daily_potential", "kpi_norm", "kpi_0_100", "opportunity_score"
     ]].rename(columns={
         "sell_med": "set_sell_med",
         "kpi_daily_potential": "kpi_daily",
     })
+
+    # KPI 30 jours moyen (inchangé) + export
     sets_index = sets_index.merge(kpi_30d, on="set_url", how="left")
     sets_index.to_csv(ANALYTICS_DIR / "sets_index.csv", index=False)
+
     log(f"Wrote sets_index: rows={len(sets_index):,}")
 
     # 3) parts_latest_by_set.csv aligned on latest set date (unit effective BUY per part)
