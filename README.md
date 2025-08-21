@@ -1,206 +1,155 @@
-# Warframe Market Collector
+# Warframe Prime Market – Purchase/Resale
 
-## 📌 Description
+Analyse et détection d’opportunités **achat pièces → vente de sets PRIME** à partir des données publiques de [warframe.market](https://warframe.market).
 
-Ce projet collecte automatiquement, toutes les 6 heures, les données publiques de [warframe.market](https://warframe.market) afin de construire un **historique exploitable** pour :
-
-* Suivre l’évolution des prix et volumes d’objets Warframe (armes, sets, composants…)
-* Détecter des opportunités d’achat/revente
-* Alimenter un **dashboard interactif** en JavaScript pour la visualisation
-
-Le pipeline est entièrement **automatisé avec GitHub Actions** (aucun serveur ni PC à laisser tourner).
+- **Collecte** (6h) des orderbooks pour **sets PRIME** et **leurs pièces exactes** (strict).
+- **Transformations analytiques** (médian journalier, coût d’assemblage, marge, ROI, KPI).
+- **UI statique** (docs/) pour explorer les sets, visualiser prix, profondeurs, et le détail des pièces.
 
 ---
 
-## 🛠 Fonctionnalités
-
-* **Collecte filtrée** : uniquement les items avec un volume supérieur à un seuil (par défaut : >3 ventes/semaine)
-* **Données collectées** :
-
-  * **Orderbook** : prix moyen du top-3 ordres d’achat/vente + profondeur de marché
-  * **Statistiques 48h** : volumes, prix min/max/avg/median par bucket officiel
-  * **Set components** : mapping des pièces nécessaires pour chaque set (avec quantités)
-* **Structure mensuelle** : CSV séparés par mois pour faciliter le chargement
-* **Rotation sécurisée** : à chaque exécution, l’ancien CSV devient `_old.csv`, remplacé par la nouvelle version
-* **Dashboard JS** intégré :
-
-  * Liste des items filtrable/triable
-  * Graphique d’évolution des prix et volumes
-  * Détails complets pour chaque item sélectionné
-
----
-
-## 📂 Architecture
+## 🧱 Architecture actuelle
 
 ```
-warframe-market-collector/
+.
 ├── collector/
-│   ├── eligibility_daily.py      # Collecte + filtrage (1x/jour)
-│   ├── snapshots_6h.py           # Snapshots des prix (toutes les 6h)
+│   ├── wfm_common.py            # Utilitaires (HTTP, throttling, helpers PRIME, fichiers mensuels)
+│   └── snapshots_6h_all.py      # Collecte 6h : sets PRIME + pièces exactes (strict)
 │
 ├── transform/
-│   └── build_analytics.py        # Transformation des données → tables prêtes pour l'UI
+│   └── build_analytics.py       # Agrégations journalières + coûts d’assemblage + KPI + exports
 │
-├── docs/                         # Dashboard JS statique
-│   ├── index.html                 # Interface principale
-│   ├── js/
-│   │   └── main.js
-│   └── data/analytics/           # Fichiers CSV exploités par l’UI
+├── docs/
+│   ├── index.html               # UI (tableau + 2 graphiques)
+│   ├── styles.css
+│   └── app.js
+│       (charge les CSV depuis docs/data/analytics/)
 │
-├── data/                         # Données brutes (CSV mensuels)
-│   └── YYYY-MM/
-│       ├── orderbook_YYYY-MM.csv
-│       ├── stats48h_YYYY-MM.csv
-│       ├── set_components_YYYY-MM.csv
+├── data/YYYY-MM/
+│   ├── orderbook_YYYY-MM.csv    # snapshots orderbook 6h
+│   └── set_components_YYYY-MM.csv
+│       (optionnel) stats48h_YYYY-MM.csv si activé
 │
-├── .github/workflows/
-│   ├── collect.yml               # Workflow GitHub Actions (6h)
-│   └── daily.yml                 # Workflow GitHub Actions (1x/jour)
-│
-├── requirements.txt
+├── dev_run_all.py               # Lance collecte + analytics en local
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation locale
+## 🔎 Modèle de coût & métriques
 
-1. **Cloner le repo**
+**Agrégations journalières (médianes)** à partir des snapshots 6h :
+- `buy_med`, `sell_med`, `buy_depth_med`, `sell_depth_med`.
 
-   ```bash
-   git clone https://github.com/<user>/warframe-market-collector.git
-   cd warframe-market-collector
-   ```
+**Coût d’achat des pièces (par set et par jour)**  
+`effective BUY` par pièce = **médiane BUY si dispo**, sinon **médiane SELL** (fallback).  
+`parts_cost_buy` = somme(effective BUY × quantité requise).
 
-2. **Créer un environnement virtuel**
+**Valeur du set** = `sell_med` du set.  
+**Marge** = `sell_med(set)` − `parts_cost_buy`.  
+**ROI%** = `marge / parts_cost_buy × 100`.
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate        # macOS / Linux
-   # .\venv\Scripts\activate       # Windows
-   ```
+**Liquidité / goulot**  
+`min_part_eff_depth` = min( floor( `sell_depth_med(part)` / `quantité` ) ) sur les pièces du set.  
+`buy_depth_med(set)` = profondeur côté BUY du set.
 
-3. **Installer les dépendances**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
+**KPI (potentiel quotidien)**  
+`daily_volume_cap` = min( `min_part_eff_depth`, `buy_depth_med(set)` )  
+`kpi_daily_potential` = max(0, `marge`) × `daily_volume_cap`  
+Une moyenne **30 jours** est aussi calculée par set (`kpi_30d_avg`).
 
 ---
 
-## 🚀 Utilisation locale
+## 🖥️ Interface (docs/)
 
-### 1. Collecte toutes les 6h (orderbook uniquement)
+- **Panneau gauche** : recherche + tri (ROI%, Marge, KPI, BUY(set)).  
+- **Tableau** : `set_url`, ROI%, Marge, KPI (valeur brute), BUY(set).  
+- **Panneau droit** :
+  - **Pièces requises** (dernier snapshot aligné) avec **coût unitaire**; la source (BUY/SELL) est exposée via *tooltip*.
+  - **Graphique Prix** : SELL(set), coût pièces (BUY), Marge.
+  - **Graphique Profondeurs** : goulot côté pièces vs profondeur BUY du set.
 
+> ⚠️ Les fichiers CSV sont servis depuis `docs/data/analytics/`.
+
+---
+
+## 📦 Sorties générées (transform)
+
+1) **Timeseries par set**  
+`docs/data/analytics/timeseries/<set_url>__set.csv`  
+Colonnes principales :  
+`date, sell_med, parts_cost_buy, margin, roi_pct, buy_depth_med, min_part_eff_depth, kpi_daily_potential`
+
+2) **Index des sets (dernier jour disponible)**  
+`docs/data/analytics/sets_index.csv`  
+Colonnes :  
+- `set_url, platform, latest_date`
+- `set_sell_med` (SELL médian du set)
+- `parts_cost_buy, margin, roi_pct`
+- `buy_depth_med, min_part_eff_depth`
+- `kpi_daily` (valeur du jour), `kpi_30d_avg`
+
+3) **Pièces alignées sur la dernière date de chaque set**  
+`docs/data/analytics/parts_latest_by_set.csv`  
+Colonnes :  
+- `set_url, platform, part_url, quantity_for_set`
+- `unit_cost_latest` (effective BUY), `unit_cost_source` (**BUY** ou **SELL**)
+- `buy_med_latest, sell_med_latest, sell_depth_med_latest, latest_date_part`
+
+---
+
+## 🚀 Exécution locale
+
+### 1) Installer les dépendances
 ```bash
-python collector/snapshots_6h.py
+python -m venv .venv
+source .venv/bin/activate      # Windows: .\.venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-📌 Produit :
-
-* `data/YYYY-MM/orderbook_YYYY-MM.csv`
-
----
-
-### 2. Transformation pour l’UI
-
+### 2) Lancer collecte + analytics
 ```bash
-python transform/build_analytics.py
+python dev_run_all.py
 ```
 
-📌 Produit :
+- Collecte 6h (immédiate, sur l’univers PRIME strict) → écrit/rotates `data/YYYY-MM/*.csv`
+- Transformation → écrit `docs/data/analytics/*`
 
-* `docs/data/analytics/index.csv`
-* `docs/data/analytics/timeseries/<item>.csv`
-
----
-
-## 🧪 Tester rapidement
-
-Pour tester sans attendre l’intégralité :
-
-* Limiter le nombre d’items dans `eligibility_daily.py` :
-
-  ```python
-  urls = urls[:10]  # seulement 10 items pour test rapide
-  ```
-* Lancer :
-
-  ```bash
-  python collector/eligibility_daily.py
-  python collector/snapshots_6h.py
-  python transform/build_analytics.py
-  ```
+### 3) Servir l’UI
+```bash
+cd docs
+python -m http.server 8000
+# Ouvrir http://localhost:8000
+```
 
 ---
 
-## 🌐 Lancer le dashboard localement
+## ⚙️ Variables d’environnement (principales)
 
-1. Aller dans `docs/`
-2. Lancer un serveur local :
+| Variable                 | Défaut | Rôle |
+|--------------------------|:------:|------|
+| `WFM_PLATFORM`           | `pc`   | Plateforme warframe.market (`pc`, `ps4`, `xb1`, `switch`) |
+| `WFM_LANGUAGE`           | `en`   | Langue des endpoints (`en`, `fr`, …) |
+| `WFM_REQS_PER_SEC`       | `3.0`  | Throttling API (soyez gentils avec l’API) |
+| `WFM_TOP_DEPTH`          | `3`    | Profondeur pour le prix moyen top-K |
+| `WFM_ONLY_PRIME`         | `true` | Limiter aux items PRIME |
+| `WFM_STRICT_SETS_PARTS`  | `true` | Cible = **sets PRIME** + **pièces exactes** uniquement |
+| `COLLECT_STATS48H`       | `false`| Active l’export `stats48h_YYYY-MM.csv` |
+| `WFM_MAX_ITEMS`          | `0`    | Limite pour tests (0 = illimité) |
+| `WFM_LOG_LEVEL`          | `INFO` | `DEBUG` pour logs détaillés côté transform |
 
-   ```bash
-   python -m http.server 8000
-   ```
-3. Ouvrir : [http://localhost:8000](http://localhost:8000)
-
----
-
-## ⚡ Automatisation GitHub Actions
-
-* `collect.yml` : exécute `snapshots_6h.py` toutes les 6 heures
-* `daily.yml` : exécute `eligibility_daily.py` une fois par jour
-* Chaque run commit automatiquement les nouveaux CSV dans le repo
+> Les valeurs par défaut utilisées par `dev_run_all.py` sont définies en tête de fichier.
 
 ---
 
-## 📊 Structure des CSV
+## 🧪 Notes & contrôles de cohérence
 
-### `orderbook_YYYY-MM.csv`
-
-| item\_url | ts | top\_buy\_avg | buy\_count | top\_sell\_avg | sell\_count | platform | weekly\_volume\_est |
-| --------- | -- | ------------- | ---------- | -------------- | ----------- | -------- | ------------------- |
-
-### `stats48h_YYYY-MM.csv`
-
-| item\_url | ts\_bucket | volume | min | max | avg | median | platform |
-| --------- | ---------- | ------ | --- | --- | --- | ------ | -------- |
-
-### `set_components_YYYY-MM.csv`
-
-| set\_url | part\_url | quantity\_for\_set |
-| -------- | --------- | ------------------ |
-
----
-
-## 📈 Transformation (Analytics)
-
-`build_analytics.py` crée :
-
-* **index.csv** : vue agrégée avec marges, ROI, volumes
-* **timeseries/** : fichiers par item pour tracer l’évolution temporelle
-
----
-
-## 📌 Paramètres ajustables (variables d’environnement)
-
-| Variable                | Par défaut | Description                                               |
-| ----------------------- | ---------- | --------------------------------------------------------- |
-| `WFM_PLATFORM`          | `pc`       | Plateforme Warframe.market (`pc`, `ps4`, `xb1`, `switch`) |
-| `WFM_LANGUAGE`          | `en`       | Langue (`en`, `fr`...)                                    |
-| `WFM_REQS_PER_SEC`      | `3.0`      | Limite de requêtes API par seconde                        |
-| `WFM_TOP_DEPTH`         | `3`        | Profondeur pour le calcul des prix moyens                 |
-| `WFM_WEEKLY_MIN_VOLUME` | `3`        | Volume minimum sur 7 jours pour inclure un item           |
-| `WFM_MAX_ITEMS`         | *(vide)*   | Limite de nombre d’items pour tests                       |
+- Les médianes sont **journalières** (les timestamps sont repliés par jour UTC).
+- `build_analytics.py` calcule un **écart** entre `parts_cost_buy` (index) et la **somme des coûts unitaires** de `parts_latest_by_set.csv` pour détecter des divergences > 5% (log d’alerte).
+- Les CSV mensuels sont **rotatés** proprement : l’ancien devient `*_old.csv`, puis déduplication sur clés pertinentes.
 
 ---
 
 ## 📜 Licence
 
-Projet libre pour usage personnel et d’analyse. Respecter les conditions d’utilisation de [Warframe.market](https://warframe.market/terms).
-
----
-
-## 📬 Contact
-
-Pour toute question ou suggestion : ouvrir une **issue** sur GitHub.
+Usage personnel/analytique. Respectez les CGU de [warframe.market](https://warframe.market/terms).
