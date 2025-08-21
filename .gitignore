@@ -1,4 +1,8 @@
 dev_tests.py
 venv
-*.csv
-data
+# --- data générée par la CI : ignorée en local ---
+data/
+docs/data/
+
+# (optionnel) garder visibles les dossiers vides pour la structure
+!docs/data/.gitkeep

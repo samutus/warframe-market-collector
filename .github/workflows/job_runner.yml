@@ -19,6 +19,8 @@ jobs:
       WFM_LOG_LEVEL: INFO  # DEBUG pour plus de logs
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -47,8 +49,19 @@ jobs:
 
       - name: Commit data & analytics
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ docs/data/
-          git commit -m "6h: collect + analytics $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "No changes"
-          git push
+          run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+            # S'assure que l'historique est à jour (évite d'écraser du remote)
+            git pull --rebase origin main
+
+            # Crée les dossiers si première exécution
+            mkdir -p data docs/data/analytics
+            touch docs/data/.gitkeep
+
+            # Outrepasse .gitignore pour pousser les CSV générés
+            git add -A -f data/ docs/data/
+            git commit -m "6h: collect + analytics $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "No changes"
+            git push
+
