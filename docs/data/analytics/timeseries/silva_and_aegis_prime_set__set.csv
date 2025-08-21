@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-silva_and_aegis_prime_set,pc,2025-08-15,25.667,38.667,7.0,32.0,4,12.333,13.0,26.334000000000003,213.52468985648264,62.0197263348921,7.0,184.33800000000002
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+silva_and_aegis_prime_set,pc,2025-08-15 00:00:00+00:00,25.667,38.667,7.0,32.0,25.667,4,17.333,13.0,21.334000000000003,123.083136214158,50.24412704597054,7.0,149.33800000000002

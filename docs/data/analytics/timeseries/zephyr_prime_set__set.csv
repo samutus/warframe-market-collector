@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-zephyr_prime_set,pc,2025-08-15,64.0,74.333,10.0,55.0,4,38.083,21.0,36.25,95.18682876874196,99.33527796814566,10.0,362.5
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+zephyr_prime_set,pc,2025-08-15 00:00:00+00:00,64.0,74.333,10.0,55.0,64.0,4,38.333,21.0,36.0,93.91386012052278,98.65020708560672,10.0,360.0

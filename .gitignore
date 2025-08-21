@@ -1,2 +1,4 @@
-dev_temp.md
+dev_tests.py
 venv
+*.csv
+data

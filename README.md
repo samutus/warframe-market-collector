@@ -90,21 +90,7 @@ warframe-market-collector/
 
 ## 🚀 Utilisation locale
 
-### 1. Collecte quotidienne (filtrage + stats + composants)
-
-```bash
-python collector/eligibility_daily.py
-```
-
-📌 Produit :
-
-* `data/YYYY-MM/stats48h_YYYY-MM.csv`
-* `data/YYYY-MM/set_components_YYYY-MM.csv`
-* `data/eligibility/eligible.json` (liste d’items filtrés)
-
----
-
-### 2. Collecte toutes les 6h (orderbook uniquement)
+### 1. Collecte toutes les 6h (orderbook uniquement)
 
 ```bash
 python collector/snapshots_6h.py
@@ -116,7 +102,7 @@ python collector/snapshots_6h.py
 
 ---
 
-### 3. Transformation pour l’UI
+### 2. Transformation pour l’UI
 
 ```bash
 python transform/build_analytics.py

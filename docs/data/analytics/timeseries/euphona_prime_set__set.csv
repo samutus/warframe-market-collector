@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-euphona_prime_set,pc,2025-08-15,20.0,48.0,1.0,30.0,3,26.0,10.0,22.0,84.61538461538461,31.3733736559181,1.0,22.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+euphona_prime_set,pc,2025-08-15 00:00:00+00:00,20.0,48.0,1.0,30.0,20.0,3,29.0,10.0,19.0,65.51724137931035,27.095186339201994,1.0,19.0

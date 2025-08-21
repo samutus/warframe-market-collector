@@ -16,6 +16,7 @@ jobs:
       contents: write
     env:
       PYTHONPATH: ${{ github.workspace }}
+      WFM_LOG_LEVEL: INFO  # DEBUG pour plus de logs
     steps:
       - uses: actions/checkout@v4
 

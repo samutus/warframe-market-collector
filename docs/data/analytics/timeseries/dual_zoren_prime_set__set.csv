@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-dual_zoren_prime_set,pc,2025-08-15,38.333,54.0,8.0,35.0,3,22.667,10.0,31.333,138.23179070896015,71.9717975372306,8.0,250.664
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+dual_zoren_prime_set,pc,2025-08-15 00:00:00+00:00,38.333,54.0,8.0,35.0,38.333,3,22.667,10.0,31.333,138.23179070896015,71.9717975372306,8.0,250.664

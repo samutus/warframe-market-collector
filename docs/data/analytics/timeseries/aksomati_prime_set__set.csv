@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-aksomati_prime_set,pc,2025-08-15,53.333,96.0,7.0,19.0,4,32.0,4.0,64.0,200.0,117.70879570067795,4.0,256.0
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+aksomati_prime_set,pc,2025-08-15 00:00:00+00:00,53.333,96.0,7.0,19.0,53.333,4,32.0,4.0,64.0,200.0,117.70879570067795,4.0,256.0

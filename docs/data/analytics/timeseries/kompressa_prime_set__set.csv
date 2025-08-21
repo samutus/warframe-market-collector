@@ -1,2 +1,2 @@
-set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-kompressa_prime_set,pc,2025-08-15,25.0,36.333,12.0,60.0,3,12.0,19.0,24.333,202.77499999999998,67.6165088822389,12.0,291.996
+set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
+kompressa_prime_set,pc,2025-08-15 00:00:00+00:00,25.0,36.333,12.0,60.0,25.0,3,14.0,19.0,22.333,159.52142857142854,62.05891147277531,12.0,267.996
