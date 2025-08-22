@@ -1,2 +1,3 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-dual_zoren_prime_set,pc,2025-08-15 00:00:00+00:00,38.333,54.0,8.0,35.0,38.333,3,22.667,10.0,31.333,138.23179070896015,71.9717975372306,8.0,250.664
+dual_zoren_prime_set,pc,2025-08-15 00:00:00+00:00,39.1665,54.3335,7.5,34.0,39.1665,3,23.334,11.0,30.9995,132.8512042513071,71.63507007829517,7.5,232.49625
+dual_zoren_prime_set,pc,2025-08-22 00:00:00+00:00,38.333,55.0,7.0,28.0,38.333,3,30.834,9.0,24.166,78.37452163196471,52.92905892694309,7.0,169.162

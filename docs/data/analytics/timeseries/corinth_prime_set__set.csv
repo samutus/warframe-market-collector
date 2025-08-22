@@ -1,2 +1,3 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-corinth_prime_set,pc,2025-08-15 00:00:00+00:00,52.333,67.333,14.0,30.0,52.333,4,28.0,13.0,39.333,140.475,105.157155321925,13.0,511.32899999999995
+corinth_prime_set,pc,2025-08-15 00:00:00+00:00,52.333,65.1665,13.5,31.5,52.333,4,28.8335,14.0,36.333,126.00967624464597,97.77533572760842,13.5,490.4955
+corinth_prime_set,pc,2025-08-22 00:00:00+00:00,50.333,65.333,14.0,32.0,50.333,4,31.667,11.0,33.666,106.31256513089333,87.39614014863045,11.0,370.32599999999996

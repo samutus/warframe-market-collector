@@ -1,2 +1,3 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
-tipedo_prime_set,pc,2025-08-15 00:00:00+00:00,32.0,46.667,5.0,50.0,32.0,3,24.333,11.0,22.334000000000003,91.78481897012291,47.57495413686244,5.0,111.67000000000002
+tipedo_prime_set,pc,2025-08-15 00:00:00+00:00,32.0,48.5,4.5,48.0,32.0,3,24.4995,11.0,24.0005,97.96322373925997,50.01427262015563,4.5,108.00224999999999
+tipedo_prime_set,pc,2025-08-22 00:00:00+00:00,32.0,45.0,6.0,47.0,32.0,3,22.334,9.0,22.666,101.48652279036446,48.09902439303709,6.0,135.996
