@@ -1,3 +1,3 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
 silva_and_aegis_prime_set,pc,2025-08-15 00:00:00+00:00,25.3335,38.167,7.0,34.5,25.3335,4,17.333,13.0,20.834000000000003,120.19846535510302,49.06656711707838,7.0,145.83800000000002
-silva_and_aegis_prime_set,pc,2025-08-22 00:00:00+00:00,17.667,36.333,3.0,36.0,17.667,4,20.666,10.0,15.666999999999998,75.81051001645213,29.27053494211857,3.0,47.00099999999999
+silva_and_aegis_prime_set,pc,2025-08-22 00:00:00+00:00,17.667,36.333,3.0,36.0,17.667,4,20.333,10.0,16.0,78.68981458712439,29.892676266923928,3.0,48.0
