@@ -49,19 +49,18 @@ jobs:
 
       - name: Commit data & analytics
         run: |
-          run: |
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            # S'assure que l'historique est à jour (évite d'écraser du remote)
-            git pull --rebase origin main
+          # S'assure que l'historique est à jour (évite d'écraser du remote)
+          git pull --rebase origin main
 
-            # Crée les dossiers si première exécution
-            mkdir -p data docs/data/analytics
-            touch docs/data/.gitkeep
+          # Crée les dossiers si première exécution
+          mkdir -p data docs/data/analytics
+          touch docs/data/.gitkeep
 
-            # Outrepasse .gitignore pour pousser les CSV générés
-            git add -A -f data/ docs/data/
-            git commit -m "6h: collect + analytics $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "No changes"
-            git push
+          # Outrepasse .gitignore pour pousser les CSV générés
+          git add -A -f data/ docs/data/
+          git commit -m "6h: collect + analytics $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "No changes"
+          git push
 
