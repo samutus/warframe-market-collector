@@ -47,20 +47,45 @@ jobs:
       - name: Build analytics for UI
         run: python transform/build_analytics.py
 
+        
       - name: Commit data & analytics
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        shell: bash
         run: |
-          git config user.name "github-actions[bot]"
+          set -euo pipefail
+
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # S'assure que l'historique est à jour (évite d'écraser du remote)
-          git pull --rebase origin main
+          # Rebase à jour (autostash pour les fichiers déjà modifiés par le run)
+          git fetch origin main
+          git -c rebase.autoStash=true pull --rebase origin main
 
-          # Crée les dossiers si première exécution
+          # S'assurer que les dossiers existent
           mkdir -p data docs/data/analytics
           touch docs/data/.gitkeep
 
-          # Outrepasse .gitignore pour pousser les CSV générés
+          # Forcer l'add des fichiers ignorés par design
           git add -A -f data/ docs/data/
-          git commit -m "6h: collect + analytics $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "No changes"
-          git push
+
+          # Commit & push seulement s'il y a des changements
+          if ! git diff --staged --quiet; then
+            git commit -m "data(ci): collect+analytics $(date -u +'%Y-%m-%dT%H:%M:%SZ') [${GITHUB_WORKFLOW}@${GITHUB_RUN_ID}]"
+
+            # Push avec retry en cas de course (nouveaux commits entre-temps)
+            for i in 1 2 3; do
+              if git push; then
+                echo "Pushed on attempt #$i"
+                break
+              fi
+              echo "Push failed, retrying rebase... (#$i)"
+              git -c rebase.autoStash=true pull --rebase origin main
+            done
+          else
+            echo "No staged changes. Skipping commit/push."
+          fi
+
+
+
+        
 
