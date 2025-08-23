@@ -1,3 +1,4 @@
 set_url,platform,date,buy_med,sell_med,buy_depth_med,sell_depth_med,eff_buy_price,n_parts,parts_cost_buy,min_part_eff_depth,margin,roi_pct,opportunity_score,daily_volume_cap,kpi_daily_potential
 nagantaka_prime_set,pc,2025-08-15 00:00:00+00:00,20.667,36.667,4.0,35.0,20.667,4,14.3335,15.0,22.3335,155.81330449645932,48.43226382954467,4.0,89.334
-nagantaka_prime_set,pc,2025-08-22 00:00:00+00:00,23.0,36.0,8.0,36.0,23.0,4,12.0,10.0,24.0,200.0,55.12792075107824,8.0,192.0
+nagantaka_prime_set,pc,2025-08-22 00:00:00+00:00,21.5,36.8335,8.5,36.5,21.5,4,11.5835,13.0,25.25,217.9824750723011,61.69537305361399,8.5,214.625
+nagantaka_prime_set,pc,2025-08-23 00:00:00+00:00,22.0,34.333,11.0,33.0,22.0,4,21.834,7.0,12.498999999999999,57.2455802876248,28.495525958427994,7.0,87.493
